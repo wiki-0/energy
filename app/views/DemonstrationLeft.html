@@ -1,0 +1,40 @@
+#{extends 'main.html' /}
+<!-- 左侧 -->
+ 
+<div class="con-left">
+	<div id="main-menu" role="navigation">
+		<div id="main-menu-inner">
+			<ul class="navigation">
+				<li class="mm-dropdown"><a href="#"><span class="mm-text">建筑信息</span></a>
+					<ul class="two-ul">
+					 	<li><a href="@{Demonstration.building_neimeng()}"><span class="mm-text">河南省-方顶村</span></a></li>
+                        <li><a href="@{Demonstration.building_neimeng()}"><span class="mm-text">内蒙古-陶海牧场</span></a></li>
+                        <li><a href="@{Demonstration.building_fujian()}"><span class="mm-text">福建省-席里村</span></a></li>
+					</ul>
+				</li>
+				<li class="mm-dropdown"><a href="#"><span class="mm-text">营造过程</span></a>
+					<ul class="two-ul">
+					 	<li><a href="@{Demonstration.creating_neimeng()}"><span class="mm-text">河南省-方顶村</span></a></li>
+                        <li><a href="@{Demonstration.creating_neimeng()}"><span class="mm-text">内蒙古-陶海牧场</span></a></li>
+                        <li><a href="@{Demonstration.creating_fujian()}"><span class="mm-text">福建省-席里村</span></a></li>
+					</ul>
+				</li>
+				<li class="mm-dropdown"><a href="#"><span class="mm-text">适宜技术</span></a>
+					<ul class="two-ul">
+					 	<li><a href="@{Demonstration.suitable_neimeng()}"><span class="mm-text">河南省-方顶村</span></a></li>
+                        <li><a href="@{Demonstration.suitable_neimeng()}"><span class="mm-text">内蒙古-陶海牧场</span></a></li>
+                        <li><a href="@{Demonstration.suitable_fujian()}"><span class="mm-text">福建省-席里村</span></a></li>
+					</ul>
+				</li>
+				<li class="mm-dropdown"><a href="#"><span class="mm-text">模拟分析</span></a>
+					<ul class="two-ul">
+					 	<li><a href="@{Demonstration.simulation()}"><span class="mm-text">河南省-方顶村</span></a></li>
+                        <li><a href="@{Demonstration.simulation()}"><span class="mm-text">内蒙古-陶海牧场</span></a></li>
+                        <li><a href="@{Demonstration.simulation()}"><span class="mm-text">福建省-席里村</span></a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+#{doLayout /}

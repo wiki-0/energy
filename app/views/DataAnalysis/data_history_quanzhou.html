@@ -1,0 +1,282 @@
+#{extends 'DataAanlysisLeft.html' /}	
+<!-- 右侧 -->
+<div class="con-right" >
+	<div class="cdcs-rig-d his-con-rig" >
+		<div class="row">
+		<div class="col-sm-12">
+			<section class="panel" style="">
+				<div class="ene-rig-d">
+					<div class="row">
+						<div class="col-sm-3">
+							<select class="form-control" id="position" onchange="selectPosition()">
+								<option>请选择安装位置</option>
+								<optgroup label="一楼">
+								 	<option value="onekitchen">一楼厨房</option>
+									<option value="onewashroom">一楼卫生间</option>
+									<option value="onelyingeast">一楼东卧</option>
+									<option value="oneaisle">一楼过道</option>
+								</optgroup>
+								<optgroup label="二楼">
+									<option value="twoparlour">二楼客厅</option>
+									<option value="twobalcony">二楼阳台</option>
+									<option value="twolyingeast">二楼东卧</option>
+								</optgroup>
+								<optgroup label="壁面">
+									<option value="wall_east">二楼东墙</option>
+									<option value="wall_west">二楼西墙</option>
+									<option value="wall_sounth">二楼南墙</option>
+									<option value="wall_north">二楼北墙</option>
+									<option value="wall_ground">二楼地面</option>
+									<option value="wall_roof">二楼屋顶</option>
+								</optgroup>
+								<optgroup label="电能耗">
+									<option value="oneelectric">一楼电能耗</option>
+									<option value="twoelectric">二楼电能耗</option>
+								</optgroup>
+								<option value="spec">室外参数</option>
+								<option value="water_index">用水量</option>
+							</select>
+						</div>
+						<div class="col-sm-3">
+							<select class="form-control" id="param">
+						    	<option>请选择检测指标</option>
+							</select>
+						</div>
+						<div class="col-sm-4">
+							<div class="input-daterange input-group" id="bs-datepicker-range">
+									<input id="start" type="text" class="form-control" name="start" placeholder="开始时间"> 
+									<span class="input-group-addon">至</span> 
+									<input id="end" type="text" class="form-control" name="end" placeholder="结束时间">
+							</div>
+						</div>
+						<div class="col-sm-2">
+							<button id="query" type="submit" class="btn btn-info">查询</button>
+						</div>
+					</div>
+					<br />
+					<div class="clear"></div>
+					<div class="curve-d" style="height: 405px">
+						<div id="main" style="height: 400px"></div>
+					</div>
+					<br/>
+						<form action="/DataAnalysis/export" id="exportForm">
+						<input type="hidden" name="type" value="quanzhou" />
+						<div class="row">
+							<div class="col-sm-3">
+								<select class="form-control" name="location2" id="location" onchange="selectLocation()">
+								  	<option>请选择安装位置</option>
+								<optgroup label="一楼">
+								 	<option value="onekitchen">一楼厨房</option>
+									<option value="onewashroom">一楼卫生间</option>
+									<option value="onelyingeast">一楼东卧</option>
+									<option value="oneaisle">一楼过道</option>
+								</optgroup>
+								<optgroup label="二楼">
+									<option value="twoparlour">二楼客厅</option>
+									<option value="twobalcony">二楼阳台</option>
+									<option value="twolyingeast">二楼东卧</option>
+								</optgroup>
+								<optgroup label="壁面">
+									<option value="twoeastwall">二楼东墙</option>
+									<option value="twowesternwall">二楼西墙</option>
+									<option value="twosouthwall">二楼南墙</option>
+									<option value="twonorthwall">二楼北墙</option>
+									<option value="twofloor">二楼地面</option>
+									<option value="twosouthwailimian">二楼屋顶</option>
+								</optgroup>
+								<optgroup label="电能耗">
+									<option value="oneelectric">一楼电能耗</option>
+									<option value="twoelectric">二楼电能耗</option>
+								</optgroup>
+								<option value="spec">室外参数</option>
+								<option value="water_index">用水量</option>
+								</select>
+							</div>
+							<div class="col-sm-3">
+								<select class="form-control" name="arguments2" id="arguments">
+								  	<option value="">请选择监测指标</option>
+								</select>
+							</div>
+							<div class="col-sm-4">
+								<div class="input-daterange input-group" id="export-datepicker-range">
+									<input type="text" class="form-control" name="start2" placeholder="开始时间">
+									<span class="input-group-addon">到</span>
+									<input type="text" class="form-control" name="end2" placeholder="结束时间">
+								</div>
+							</div>
+							<div class="col-sm-2">
+								<button type="submit" class="btn btn-info" id="export">导出Excel</button>
+							</div>
+						</div>
+						</form>
+						<br/>
+					</div>
+			    </section> 
+			</div>
+	  </div>
+	</div>
+</div>
+<script>
+//待添加的第二个下拉框
+var option1 = $("<option>").val('temperature').text("温度");
+var option2 = $("<option>").val('humidity').text("湿度");
+var option3 = $("<option>").val('windspeed').text("风速");
+
+var option4 = $("<option>").val('quantity').text("电量");
+var option5 = $("<option>").val('tension').text("电压");
+var option6 = $("<option>").val('current').text("电流");
+var option7 = $("<option>").val('power').text("功率");
+
+var option8 = $("<option>").val('barometric').text("大气压力");
+var option9 = $("<option>").val('total_radiation').text("总辐射");
+var option10 = $("<option>").val('direct_radiation').text("直接辐射");
+var option11 = $("<option>").val('wind_speed').text("风速");
+
+var option12 = $("<option>").val('water_index').text("用水量");
+//控制级联下拉框
+selectPosition = function(){
+	  $("#param").empty();
+	  var vl= $('#position option:selected').val();//获取到 当前选择的option值
+	  
+	  //判断一下，决定第二个下拉框该显示哪几个option
+	  if(vl == 'onekitchen' || vl == 'onewashroom' || vl == 'twoparlour' || vl == 'twobalcony'){
+ 		 $("#param").append(option1);
+ 	     $("#param").append(option2);
+ 	 }else if(vl == 'onelyingeast' || vl == 'oneaisle' || vl == 'twolyingeast' || vl == 'twoaisle' ){
+ 		 $("#param").append(option1);
+ 	     $("#param").append(option2);
+ 	     $("#param").append(option3);
+ 	 }else if(vl == 'oneelectric' || vl == 'twoelectric'){
+ 		 $("#param").append(option4);
+ 		 $("#param").append(option5);
+ 	     $("#param").append(option6);
+ 	     $("#param").append(option7);
+ 	 }else if(vl == "spec"){
+ 		 $("#param").append(option8);
+ 		 $("#param").append(option9);
+ 	     $("#param").append(option10);
+ 	     $("#param").append(option11); 
+ 	 }else if(vl == "water_index"){
+ 		 $("#param").append(option12); 
+ 	 }
+	 //通过父节点来判断 
+	 var pn = $('#position option:selected').parent().attr('label');
+	 if(pn == "壁面")
+		 $("#param").append(option1);
+}
+selectLocation = function(){
+	var $select = $("#arguments");
+	$select.empty();
+	var vl= $('#location option:selected').val();//获取到 当前选择的option值
+	//判断一下，决定第二个下拉框该显示哪几个option
+	if(vl == 'onekitchen' || vl == 'onewashroom' || vl == 'twoparlour' || vl == 'twobalcony'){
+		$select.append(option1);
+		$select.append(option2);
+	}else if(vl == 'onelyingeast' || vl == 'oneaisle' || vl == 'twolyingeast' || vl == 'twoaisle' ){
+		$select.append(option1);
+		$select.append(option2);
+		$select.append(option3);
+	}else if(vl == 'oneelectric' || vl == 'twoelectric'){
+		$select.append(option4);
+		$select.append(option5);
+		$select.append(option6);
+		$select.append(option7);
+ 	}else if(vl == "spec"){
+ 		$select.append(option8);
+ 		$select.append(option9);
+ 		$select.append(option10);
+ 		$select.append(option11); 
+	}else if(vl == "water_index"){
+		$select.append(option12); 
+	}
+	//通过父节点来判断 
+	var pn = $('#location option:selected').parent().attr('label');
+	if(pn == "壁面"){
+		$select.append(option1);
+	}
+}	
+$('#query').on('click',function(){
+	var position=$('#position').val();
+	var param=$('#param').val();
+	var start=document.getElementById('start').value;
+	var end=document.getElementById('end').value;
+	var url='/DataAnalysis/quanzhouFindHistData?position='+position+'&param='+param+'&start='+start+'&end='+end;
+	$.getJSON(url, function(data){
+		var series = [];
+		if (typeof (data.series) != "undefined") {
+			$.each(data.series, function(index,
+					chartArray) {
+				var datas = [];
+				var date;
+				$.each(chartArray, function(idx,
+						chartData) {
+					date = chartData.time;
+					datas.push([ Date.parse(date),
+							chartData.value ]);
+				});
+				series.push({
+					name : index,
+					data : datas
+				});
+			});
+		}
+		
+		$('#main').highcharts({
+			exporting : {
+				enabled : false
+			},
+			chart : {
+				type : data.type,
+				zoomType : 'x'
+			},
+			title : {
+				text : data.title,
+				x : -20
+			//center
+			},
+			subtitle : {
+				text : data.subtitle,
+				x : -20
+			},
+			xAxis : {
+				type : 'datetime',
+				dateTimeLabelFormats : {
+					day : '%e %b'
+				}
+			},
+			yAxis : {
+				title : {
+					text : data.yAxis_title
+				}
+			},
+			tooltip : {
+				shared : true,
+				valueSuffix : data.tooltip
+			},
+			series : series
+		});
+	});
+});
+$('#bs-datepicker-range').datepicker({
+});
+$('#end_datepicker').datepicker({
+});
+$('#export-datepicker-range').datepicker("clearDates");
+$("#exportForm").validate({
+	focusInvalid: false,
+	rules: {
+		'start2': {
+		  required: true,
+		},
+		'end2': {
+			required: true
+		},
+		'location': {
+			required: true
+		},
+		'arguments': {
+			required: true
+		}
+	}
+});
+</script>

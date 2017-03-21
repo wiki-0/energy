@@ -1,0 +1,61 @@
+#{extends 'bbs.html' /} #{set title:'后台帖子管理' /}
+<!-- 右侧 -->
+<div class="con-right">
+    <div class="bbs-new">
+        <div class="panel panel-default">
+            <div class="panel-heading ot-tab-heading cre-head-bc" >
+                            文章分类
+            </div>
+            <div class="panel-body">
+	        	<div class="row" style="text-align: right;margin-right: 5%">
+	        		<button onclick="window.location.href='/TopicSecure/newSection'" class="btn btn-lg btn-primary bbs-ft-butt">添加分类</button>
+	        	</div>
+                <ul class="bbs-ul">
+                    <li><!-- <i class="fa fa-file-text-o"></i> -->
+                        <label class="bbs-lab-detail" style="width:20%">名称</label>
+                        <label class="bbs-lab-detail" style="width:20%">标签</label>
+                        <label class="bbs-lab-detail" style="width:20%">是否显示</label>
+                        <label class="bbs-lab-detail" style="width:20%">版块排序</label>
+                        <label class="bbs-lab-detail" style="width:20%">操作</label>
+                        <label class="clear"></label>
+                </li>
+                #{list items:sections, as:'section'}
+                <li><!-- <i class="fa fa-file-text-o"></i> -->
+                    <label class="bbs-lab-detail bbs-li-aut" style="width:20%">${section.name}</label>
+                    <label class="bbs-lab-detail bbs-li-aut" style="width:20%">${section.tab}</label>
+                    <label class="bbs-lab-detail bbs-li-aut" style="width:20%">
+                    	<input type="hidden" value="${section.id}">
+                		<select class="showStatus" name="show_status">
+                			<option value="true" #{if section.show_status}selected="selected"#{/if}>显示</option>
+                			<option value="false" #{if !section.show_status}selected="selected"#{/if}>隐藏</option>
+                		</select>
+                    </label>
+                    <label class="bbs-lab-detail bbs-li-aut" style="width:20%">${section.display_index}</label>
+                    <label class="bbs-lab-detail bbs-li-aut" style="width:20%">
+						<button class="btn btn-default btn-sm" onclick="deleteSection(${section.id})">
+							删除
+						</button>
+					</label>
+                    <label class="clear"></label>
+                </li>
+                #{/list}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+function deleteSection(id){
+	if(confirm('确定要删除吗？')){
+		$.post('/TopicSecure/deleteSection?id='+id);
+		window.location.reload();
+	}
+}
+$(".showStatus").change(function(){
+	debugger;
+	var id = $(this).prev().val();
+	var showStatus  = $(this).val();
+	$.post('/TopicSecure/saveSectionShowStatus?id='+id+'&show_status='+showStatus);
+	window.location.reload();
+})
+</script>

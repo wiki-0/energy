@@ -1,0 +1,65 @@
+  #{extends 'main.html' /} #{set title:'IStorm Patrol' /}
+		<!-- 中间 -->
+		<section class="con-other">
+			<!-- 左侧 -->
+			<div class="con-left">
+				<nav class="navbar-default navbar-static-side" role="navigation" >
+                <div class="sidebar-collapse">
+                <ul class="nav metismenu" id="side-menu">
+                    <li class="on-li">
+                        <a href="@{Propaganda.training()}" class="metismenu-a" ><i class="fa fa-th-large"></i> <span class="nav-label">宣传培训</span> <span class="fa arrow"></span></a>
+                    </li>
+                    <li class="active">
+                        <a href="@{Propaganda.index()}" class="metismenu-a" ><i class="fa fa-envelope"></i> <span class="nav-label">BBS</span><span class="fa arrow"></a>
+                    </li>
+				#{if session.get("permission")!=null}
+					#{if session.get("permission") == "bbs_manager"}
+                        <li class="on-li">
+                            <a href="@{TopicSecure.topic()}" class="metismenu-a" ><i class="fa fa-envelope"></i> <span class="nav-label">文章管理</span><span class="fa arrow"></a>
+                        </li>
+                        <li class="on-li">
+                            <a href="@{TopicSecure.section()}" class="metismenu-a" ><i class="fa fa-envelope"></i> <span class="nav-label">文章分类</span><span class="fa arrow"></a>
+                        </li>
+					#{/if}
+				#{/if}
+                </ul>
+            </div>
+        </nav>
+			</div>
+			<!-- 右侧 -->
+			<div class="con-right">
+				<div class="mon-con">
+					<h3 class="mon-con-h3">建筑构造</h3>
+					<p class="mon-con-p">
+						<b>内容提要</b>
+					    <label class="mon-con-lab">本课程主要研究民用建筑的构造及组成，研究各组成部分构造原理和构造方法。构造原理主要研究各组成部分的要求，以及满足这些要求理论：
+					    构造方法则研究在构造原理指导下，用建筑材料和制品构成构件和配件，以及购配件之间的连接方法。具体阐述基础、墙体、楼梯、门窗、楼地层、屋顶的特点，构造原理，
+					    构造方法及要求</label>
+					   <label class="mon-con-lab">
+					   	随着农村经济体制改革的不断 深入,人们开始追求小康生活的居住水平,对清洁能源的消费能力也有了较高要求,因此,国家进行了部分农村节能住宅示范建设,改善了农村能
+					   	源结构落后、室内 舒适度差等问题。这些示范项目为建设农村节能住宅起到了一定作用,但能源利用单一,对于多种可再生能源的综合运用能力仍需进一步提高。
+					   	为此,笔者将“自维 持住宅”的概念应用到农村中,并以河北寒冷地区农村住宅为例来进行建筑设计研究。
+					   </label>
+					   <label class="mon-con-lab">
+					   “自维持住宅”对能源综合利用较高,节能显著,本文的研究从四方面入手。 首先,在掌握“自维持住宅"基本特点和设计思路的基础上,对太阳能及生物质能技术、农村传统能源利
+					      用技术进行分析,总结出各自的利弊问题,并作为农村“自 维持住宅"的研究基础。其次,对河北地区农村住宅建筑特点和居民用能情况进行调研,作为农村“自维持住宅"的研究前
+					      提。通过分析该地区住宅功能和使用模式 上的特点,为“自维持住宅"的方案设计打下基础；通过用能情况调研,了解该地区居民在能源使用上的构成和侧重点,为“自维持住宅"
+					      的能源选择提供依据。第 三,结合研究基础和调研确定了以改善传统能源利用为主,太阳能及生物质能技术为辅的能源利用方向,提炼出基于有限技术农村“自维持住宅”设计方法,
+					      包括供 暖、供气、供电、通风和供水。最后,通过研究前提和设计方法,进行“自维持住宅”方案设计。通过以上设计研究达到减少住宅能源消耗,提高农村居住品质的目 的。
+					   </label>
+					   <img src="@{'/public/images/xuanchuan.jpg'}" width="700" height="350px"  />
+					</p>
+				</div>
+			</div>
+		</section>
+		
+	    <script src="@{'/public/javascripts/jquery-1.8.3.min.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/bootstrap.min.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/jquery.metisMenu.js'}" type="text/javascript"></script>
+
+		<!-- 分页  -->
+		<script src="@{'/public/javascripts/jquery.dataTables.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/DT_bootstrap.js'}" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/dynamic_table_init.js'}" type="text/javascript"></script>
+		
+

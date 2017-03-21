@@ -1,0 +1,28 @@
+#{extends 'SystemmanageLeft.html' /}
+<style>
+    iframe{
+        width:100%;
+        border:20px;
+        height:410px;
+    }
+    .paging_bootstrap ul{
+    position: absolute;
+    right: 10%;}
+    .paging_bootstrap ul li {
+    list-style: none;
+    float: left;
+    padding: 10px 10px;
+}
+</style>
+<div class="con-right">
+  <div class="cdcs-rig-d" style="margin-left:10px;background:#fff;padding:10px">
+    
+   <div class="ene-rig-d" style="margin:0;padding:0">
+    <p class="ene-p-tit">>>参数设置<button class="btn btn-info" style="float:right" onclick="javascript:window.location.href='@{Arguments.blank()}'">新建</button></p>
+    <div class="ene-type-d" id="tableDate">
+    	<iframe src="@{Arguments.list()}"></iframe>
+    </div>
+   </div>
+  </div>
+</div>
+

@@ -1,0 +1,46 @@
+#{extends 'Secure/layout.html' /}
+<div id="login">
+	
+	<div class="container">
+	#{form @authenticate() , class:'form-signin' }
+		
+		#{if flash.error}
+			<p class="secure-error">
+				用户名或密码错误！
+			</p>
+		#{/if}
+		#{if flash.success}
+			<p class="secure-success">
+                                       已经成功退出登录
+			</p>
+		#{/if}
+        <h2 class="form-signin-heading">请登录</h2>
+		<p id="username-field">
+            <label for="username" class="sr-only">&{'secure.username'}</label>
+			<input type="text" name="username" id="username" class="form-control" value="${flash.username}" placeholder="用户名" required autofocus>
+		</p>
+		<p id="password-field">
+            <label for="password" class="sr-only">&{'secure.password'}</label>
+            <input type="password" id="inputPassword" name="password" class="form-control" placeholder="密码" required>
+		</p>
+		<p id="remember-field">
+        <div class="checkbox">
+        <label>
+			<input type="checkbox" name="remember" id="remember" value="true" ${flash.remember ? 'checked="true"' : ''} >记住我
+            </label>
+    	</div>
+		</p>
+		<p id="signin-field">
+			<input type="submit" class="btn btn-lg btn-primary btn-block" id="signin" value="登录" />
+		</p>
+        <div class="row">
+            <div class="col-xs-6">
+                <a href="@{Register.index()}" class="btn btn-default btn-block" role="button">注册</a>
+            </div>
+            <div class="col-xs-6">
+                <a href="@{Application.index()}" class="btn btn-default btn-block" role="button">返回</a>
+            </div>
+        </div>
+	#{/form}
+    </div> <!-- /container -->
+</div>

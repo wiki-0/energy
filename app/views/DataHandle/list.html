@@ -1,0 +1,53 @@
+#{extends 'example.html' /} #{set title:'数据操作' /}
+<div>
+    <div id="crudListTable">
+    #{crud.tableTileDisable fields:['操作时间','备份方式','备份/还原','路径','操作'] }
+        #{crud.custom '操作时间'}
+        	${object.date}
+        #{/crud.custom}
+        #{crud.custom '备份方式'}
+        	${object.backup_method}
+        #{/crud.custom}
+        #{crud.custom '备份/还原'}
+        	${object.process_mode}
+        #{/crud.custom}
+        #{crud.custom '路径'}
+        	${object.path}
+        #{/crud.custom}
+        #{crud.custom '操作'}
+        	#{if object.process_mode.toString() == 'backup'}
+        	<input type="hidden" value="${object.id}">
+        	<button class="btn-sm btn-danger delete-button">删除</button>
+        	<button class="btn-sm btn-success restore-button">还原</button>
+        	#{/if}
+        #{/crud.custom}
+    #{/crud.tableTileDisable}
+    </div>
+    <div id="crudListPagination">#{crud.pagination /}</div>
+</div>
+<script>
+$(".delete-button").click(function(){
+	var id = $(this).prev().val();
+	if(confirm("确定删除吗？")){
+		$.ajax({
+			url:"@{DataHandle.delete()}",
+			data:{id:id},
+			success:function(){
+				location.reload();
+			}
+		})
+	}
+})
+$(".restore-button").click(function(){
+	var id = $(this).prev().prev().val();
+	if(confirm("确定还原吗？")){
+		$.ajax({
+			url:"@{DataHandle.restore()}",
+			data:{id:id},
+			success:function(){
+				location.reload();
+			}
+		})
+	}
+})
+</script>

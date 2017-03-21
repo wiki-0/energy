@@ -1,0 +1,277 @@
+#{extends 'main.html' /}
+#{set title:'能源自维持监控展示平台' /}
+
+<!-- 头部 -->
+<div id="head"></div>
+
+<section class="content">
+    <div>
+        <img src="@{'/public/images/map.jpg'}" class="map-img" width="495px" height="300px"/>
+        <!--百度地图容器-->
+        <div id="map" style="width:495px;height:300px"></div>
+    </div>
+    <div class="clear"></div>
+    <div class="select-butt">
+        <button type="button" class="btn btn-primary dropdown-toggle button-rig" id="fdc">河南省-方顶村</button>
+        <button type="button" class="btn btn-primary dropdown-toggle button-rig" id="qz">福建省-席里村</button>
+        <button type="button" class="btn btn-primary dropdown-toggle button-rig" id="hle">内蒙古-陶海牧场</button>
+        <button type="button" class="btn btn-primary dropdown-toggle button-rig" id="msc">河南省-庙上村</button>
+    </div>
+    <br>
+    <div class="about_fdc" hidden>
+        <div class="jumbotron">
+            <div class="container">
+                <p>
+                    河南省方顶古村落在中国建筑热工分区中位于寒冷地区，主要气候特点是春季冷暖无常，多风少雨，平均气温14.8℃；夏季炎热多雨，水热同期，平均气温26.7℃；秋季凉爽,日照充足，平均气温14.5℃；冬季风多雪少，寒冷干燥，平均气温1.2℃。年平均日照时数2337.9小时。初霜与终霜期间平均日数为52天，全年无霜期平均是225天。年降水量一般在500—800毫米，多集中在7、8、9月份。
+                </p><br>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="/public/images/about/fdcAbout1.jpg"
+                             style="max-width: 100%; width: 100%; height: 197px;">
+                    </div>
+                    <div class="col-md-4">
+                        <img src="/public/images/about/fdcAbout2.jpg"
+                             style="max-width: 100%; width: 100%; height: 197px;">
+                    </div>
+                    <div class="col-md-4">
+                        <img src="/public/images/about/fdcAbout3.jpg"
+                             style="max-width: 100%; width: 100%; height: 197px;">
+                    </div>
+                </div>
+                <br>
+                <p>
+                    方顶地理位置位于郑州市上街区峡窝镇西南部，地处黄土浅山丘陵地区。域内地形险要，古迹丰富，据记载，距今已有600余年历史。村内建筑以明清至民国时期民居建筑遗存为主。其主要类型为古街、祠堂、名人故居和民居。建筑材料主要有砖、石、木、土等。住宅的建筑形式多样，既有生土窑居又有砖石建筑，生土窑居既有窑洞又有土坯，砖石建筑既有砖砌住宅又有砖石混合。多样的建筑形式和住宅布局方式，可以充分展示当地本土住宅样式。&nbsp;<br>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="about_qz" hidden>
+        <div class="jumbotron">
+            <div class="container">
+                <p>
+                    福建席里村在中国建筑热工分区中位于夏热冬暖地区，其主要的气候特点是年太阳辐射总量为120-140千卡/平方厘米，大部分地区年平均气温为19.5-21.0℃，最热月平均气温达26-29℃，最冷月也有9-13℃。全年无霜期长，年日照时数为1800-2200小时，年降水量为1000-1800毫米。
+                </p><br>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="/public/images/about/qzAbout1.jpg"
+                             style="max-width: 100%; width: 100%; height: 197px;">
+                    </div>
+                    <div class="col-md-4">
+                        <img src="/public/images/about/qzAbout2.jpg"
+                             style="max-width: 100%; width: 100%; height: 197px;">
+                    </div>
+                    <div class="col-md-4">
+                        <img src="/public/images/about/qzAbout3.jpg"
+                             style="max-width: 100%; width: 100%; height: 197px;">
+                    </div>
+                </div>
+                <br>
+                <p>
+                    席里村地理位置位于泉州市，该地区建筑的外观主要为红砖红瓦、雕梁画栋，其形象个性鲜明，很有特点，富有地方特色。建筑墙体以红砖为主题，墙基为白色，红色的墙体上白色的窗框以及红白镶嵌构成的图案使古民居的外墙产生了一种强烈的艺术效果，泉州人称这种砌筑方式为“出砖入石”。席里村示范点建筑一层以条石砌筑，二层以红砖为主，窗框门框都是白色，具有鲜明的地域特征。&nbsp;<br>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="about_hle" hidden>
+        <div class="jumbotron">
+            <div class="container">
+                <p>
+                    内蒙古陶海牧场在中国建筑热工分区中位于严寒地区，其气候特点是春季多大风而少雨，蒸发量大；夏季温凉而短促，降水集中；秋季降温快，霜冻早；冬季严寒漫长，地面积雪时间长。年均气温0.55摄氏度，年降水量3626毫米。夏季最高气温能达到30多摄氏度，冬季最低气温能达到-37摄氏度，年日照时数2049.5小时，无霜期日数126天。
+                </p><br>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="/public/images/about/hleAbout1.jpg"
+                             style="max-width: 100%; width: 100%; height: 197px;">
+                    </div>
+                    <div class="col-md-4">
+                        <img src="/public/images/about/hleAbout2.jpg"
+                             style="max-width: 100%; width: 100%; height: 197px;">
+                    </div>
+                    <div class="col-md-4">
+                        <img src="/public/images/about/hleAbout3.jpg"
+                             style="max-width: 100%; width: 100%; height: 197px;">
+                    </div>
+                </div>
+                <br>
+                <p>
+                    陶海牧场位于呼伦贝尔境内，呼伦贝尔市是内蒙古东部地区重要的城市，是一个多民族文化共同繁荣的地方，蒙古族文化在其中占据了主要地位。在呼伦贝尔市城市总体规划（2012—2030）中确定城市性质为：“东北地区开放型区域中心城市，内蒙古自治区东部重要的产业基地和服务中心，具有草原文化和民族特色的国际旅游名城与生态宜居城市。” 陶海牧场建筑特点主要为：窗户采用双层窗；主要功能的房间如起居室、卧室位于南向，次要功能如厨房在北向。该示范点能体现当地民居的典型特点。&nbsp;<br>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="about_msc" hidden>
+        <div class="jumbotron">
+            <div class="container">
+                <p>
+                    河南省庙上村在中国建筑热工分区中位于寒冷地区，其主要的气候特点是四季分明，春季温和、夏季炎热、秋季凉爽、冬季干冷。全年平均气温为13.9°C，无霜期219天；年平均日照为2354.3h；年降水量650mm；主导风向为东风和西北风。
+                </p><br>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="/public/images/about/mscAbout1.jpg"
+                             style="max-width: 100%; width: 100%; height: 197px;">
+                    </div>
+                    <div class="col-md-4">
+                        <img src="/public/images/about/mscAbout2.jpg"
+                             style="max-width: 100%; width: 100%; height: 197px;">
+                    </div>
+                    <div class="col-md-4">
+                        <img src="/public/images/about/mscAbout3.jpg"
+                             style="max-width: 100%; width: 100%; height: 197px;">
+                    </div>
+                </div>
+                <br>
+                <p>
+                    庙上村地理位置位于三门峡市陕县西张村镇，地处黄土高原。千百年来这里的居民发展出适应自然气候的宜居住宅形式——地坑窑院，即一种向黄土地下挖院挖窑的建筑形式。窑院成群组成村落。庙上村现留存近百座地坑窑院，是我国住建部首批公示的“中国传统村落”之一，体现了人类在黄土地区创造的独特的生态节能型住宅形式。下沉式窑居村落被称为地平线下的村庄。生活空间位于地下，窑顶的地面是自家的晾晒场所。每家的窑院中种有树木，远看村落时，呈现出“见树不见村，进村不见房，闻声不见人”的景象，形成独具特色的塬上村落形态。&nbsp;<br>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+<div id="modal-blurred-bg" class="modal fade modal-blur" tabindex="-1"
+     role="dialog" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="jumbotron">
+            <div class="container">
+                <p><b>研发背景
+                </b><br>&nbsp;&nbsp;&nbsp;&nbsp;本监测展示平台研发依托“十二五”国家科技支撑计划课题——“能源自维持住宅监测展示平台研发与范”（2013BAL01B04）。该课题隶属于隶属于“农村能源自维持住宅关键技术集成研究与示范”项目。该课题也是科技部将“村镇建设”作为独立研究领域后的第一个立项项目中的课题。
+                    <br><br><b>研发团队
+                    </b><br>&nbsp;&nbsp;&nbsp;&nbsp;郑州大学
+                    <br>&nbsp;&nbsp;&nbsp;&nbsp;中国建筑设计院有限公司
+                    <br>&nbsp;&nbsp;&nbsp;&nbsp;中英娜（北京）科技有限公司
+                    <br>&nbsp;&nbsp;&nbsp;&nbsp;新蒲建设集团有限公司。
+                    <br><br><b>应用前景
+                    </b><br>&nbsp;&nbsp;&nbsp;&nbsp;能源自维持住宅监测在线展示平台研究是根据我国国情的自主研发的产品和技术，具有很强的针对性。在节能住宅建设领域中，国外同类产品或技术的科技含量和功能品质都比较高。同时，也有许多节能软件的开发与应用，在节能建筑设计及监测中均有较为卓越的表现，可以提供关于住宅建筑物理环境等方面大量的实证数据。另外，建筑全寿命周期模型的建立也为建筑设计—结构设计—施工与建造—能耗监测提供了可量化的虚拟模型平台。然而，在农村节能住宅中应用多学科软件平台分析与研究，建立能源自维持住宅建筑信息平台及监测展示系统，系统分析自维持住宅体系的建筑形态、结构、构造、材料，结合自然地理信息、地方营造经验、建筑工艺、施工流程等关键技术环节，并实现建筑信息的可视化动态模拟，在国内外相关研究中尚属首例。它不仅克服以往研究缺乏对于不同地貌特征的村镇住宅选址以及特殊营造技术方法的针对性研究的不足，也克服了以往研究中仅注重理论模型研究，示范推广应用难度大，监测反馈机制不健全的缺点。充分考虑了农村住宅受自然地理和人文历史条件、建设模式、村民自住建房建造水平及培训需求等因素影响，实现了简便、易操作的动态可视化网络培训平台。
+                    <br>
+                    <br></p>
+            </div>
+        </div>
+    </div>
+</div>
+<h6 id="iptotal" style="text-align:right;">独立IP统计共0人访问</h6>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=6OrS3tgz6OC1kGo2r4VwxNut">
+</script>
+<script type="text/javascript">
+
+    //统计首页的访问 减少请求次数
+    $.ajax({
+        url:"/Application/doGet",
+        type: 'post',
+        dataType: 'text',
+        async: false,
+        success:function(data){
+            $("#iptotal").html("独立IP统计共"+data+"人访问");
+        }
+    })
+    var sContent ="";
+    $.ajax({
+        type: "POST",
+        url: "/Application/baiduMap",
+        data: "json",
+        success: function (msg) {
+            var dataObj = eval(msg);
+            sContent = dataObj.content;
+            var map = new BMap.Map("map");
+            var point = new BMap.Point(113.269637, 34.775667);
+            var marker = new BMap.Marker(point);
+            var infoWindow = new BMap.InfoWindow(sContent);  // 创建信息窗口对象
+            //向地图添加控件
+            var navControl = new BMap.NavigationControl({
+                anchor: BMAP_ANCHOR_TOP_LEFT,
+                type: BMAP_NAVIGATION_CONTROL_LARGE
+            });
+            map.addControl(navControl);
+            map.centerAndZoom(point, 15);
+            map.addOverlay(marker);
+            map.openInfoWindow(infoWindow, point);
+            marker.addEventListener("click", function () {
+                map.openInfoWindow(infoWindow, point); //开启信息窗口
+            });
+        }
+    })
+</script>
+<script>
+    $('#qz').click(function () {
+        $('.about_hle').hide();
+        $('.about_fdc').hide();
+        $('.about_msc').hide();
+        $('.about_qz').show();
+    });
+    //海拉尔
+    $('#hle').click(function () {
+        var sContent ="";
+        $.ajax({
+            type: "POST",
+            url: "/Application/baiduMap?location=hailar",
+            data: "json",
+            success: function (msg) {
+                var dataObj = eval(msg);
+                sContent = dataObj.content;
+                var map = new BMap.Map("map");
+                //海拉尔
+                var point = new BMap.Point(113.269637, 34.775667);
+                var marker = new BMap.Marker(point);
+                var infoWindow = new BMap.InfoWindow(sContent);  // 创建信息窗口对象
+                //向地图添加控件
+                var navControl = new BMap.NavigationControl({
+                    anchor: BMAP_ANCHOR_TOP_LEFT,
+                    type: BMAP_NAVIGATION_CONTROL_LARGE
+                });
+                map.addControl(navControl);
+                map.centerAndZoom(point, 15);
+                map.addOverlay(marker);
+                map.openInfoWindow(infoWindow, point);
+                marker.addEventListener("click", function () {
+                    map.openInfoWindow(infoWindow, point); //开启信息窗口
+                });
+            }
+        })
+        $('.about_qz').hide();
+        $('.about_fdc').hide();
+        $('.about_msc').hide();
+        $('.about_hle').show();
+    });
+    $('#fdc').click(function () {
+        $('.about_msc').hide();
+        $('.about_hle').hide();
+        $('.about_qz').hide();
+        $('.about_fdc').show();
+    });
+    //庙上村
+    $('#msc').click(function () {
+        var sContent ="";
+        $.ajax({
+            type: "POST",
+            url: "/Application/baiduMap?location=msc",
+            data: "json",
+            success: function (msg) {
+                var dataObj = eval(msg);
+                sContent = dataObj.content;
+                var map = new BMap.Map("map");
+                //方顶村
+                var point = new BMap.Point(111.21733, 34.620188);
+                var marker = new BMap.Marker(point);
+                var infoWindow = new BMap.InfoWindow(sContent);  // 创建信息窗口对象
+                //向地图添加控件
+                var navControl = new BMap.NavigationControl({
+                    anchor: BMAP_ANCHOR_TOP_LEFT,
+                    type: BMAP_NAVIGATION_CONTROL_LARGE
+                });
+                map.addControl(navControl);
+                map.centerAndZoom(point, 15);
+                map.addOverlay(marker);
+                map.openInfoWindow(infoWindow, point);
+                marker.addEventListener("click", function () {
+                    map.openInfoWindow(infoWindow, point); //开启信息窗口
+                });
+            }
+        })
+        $('.about_fdc').hide();
+        $('.about_hle').hide();
+        $('.about_qz').hide();
+        $('.about_msc').show();
+    });
+</script>

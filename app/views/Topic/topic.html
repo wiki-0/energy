@@ -1,0 +1,104 @@
+#{extends 'bbs.html' /} #{set title:'后台帖子管理' /}
+<!-- 右侧 -->
+<div class="con-right">
+    <div class="bbs-new">
+        <div class="panel panel-default">
+            <div class="panel-heading ot-tab-heading cre-head-bc" >
+                            论坛后台
+            </div>
+            <div class="panel-body">
+                <ul class="bbs-ul">
+                    <li class="bbs-li" ><!-- <i class="fa fa-file-text-o"></i> -->
+                        <label class="bbs-lab-detail bbs-li-tit">标题</label>
+                        <label class="bbs-lab-detail bbs-li-aut">作者</label>
+                        <label class="bbs-lab-detail bbs-li-kind">分类</label>
+                        <label class="bbs-lab-detail bbs-li-zd">置顶</label>
+                        <label class="bbs-lab-detail bbs-li-jj">加精</label>
+                        <label class="bbs-lab-detail bbs-li-status">审核</label>
+                        <label class="bbs-lab-detail bbs-li-time">时间</label>
+                        <label class="bbs-lab-detail bbs-li-play">操作</label>
+                        <label class="clear"></label>
+                </li>
+                #{list items:topics, as:'topic'}
+                <li><!-- <i class="fa fa-file-text-o"></i> -->
+                    <a href="show?id=${topic?.id}" class="bbs-lab-detail bbs-li-tit">${topic?.title}</a>
+                    <label class="bbs-lab-detail bbs-li-aut">${topic?.user.nickname}</label>
+                    <label class="bbs-lab-detail bbs-li-kind">                             	
+                    	<select id="${topic?.id}">
+	                    	#{list items:sections, as:'section'}
+	                    		#{if section?.id==topic?.s_id}
+	                    			<option value="${section?.id}" selected="selected">${section?.name}</option>
+	                    		#{/if}
+	                    		#{elseif section?.id!=topic?.s_id}
+	                    			<option value="${section?.id}">${section?.name}</option>
+	                    		#{/elseif}
+                    		#{/list}
+                    	</select>
+                    	<button class="btn btn-default btn-sm" onclick="moveSection(${topic?.id})">移动</button>          	                    	             		                	
+                    </label>
+                    <label class="bbs-lab-detail bbs-li-zd">
+	                	#{if topic?.show_status == 1}
+	                	#{if topic.top}
+	                		<button class="btn btn-default btn-sm" onclick="window.location.href='/TopicSecure/stickTopic?id=${topic?.id}&stick=false'">取消置顶</a></button>
+	                	#{/if}
+	                	#{elseif !topic.top}
+	                		<button class="btn btn-default btn-sm" onclick="window.location.href='/TopicSecure/stickTopic?id=${topic?.id}&stick=true'">置顶</a></button>
+	                	#{/elseif}
+	                    #{/if}
+	                    #{elseif topic?.show_status == 0}
+	                    	<button class="btn btn-default btn-sm" disabled="disabled">置顶</button>
+	                    #{/elseif}
+                    </label>
+                    <label class="bbs-lab-detail bbs-li-zd">
+	                	#{if topic?.show_status == 1}
+	                		<button class="btn btn-default btn-sm" onclick="setIsFeatured(${topic.id})">
+			                	#{if topic.isFeatured}
+			                		取消加精
+			                	#{/if}
+			                	#{else}
+			                		加精
+			                	#{/else}
+	                		</button>
+	                    #{/if}
+	                    #{elseif topic?.show_status == 0}
+	                    	<button class="btn btn-default btn-sm" disabled="disabled">加精</button>
+	                    #{/elseif}
+                    </label>
+                    <label class="bbs-lab-detail bbs-li-status">
+	                    #{if topic?.show_status == 0}
+	                        <button class="btn btn-default btn-sm"><a href="/TopicSecure/showStatus?id=${topic?.id}&show=1&stick=0">通过</a></button>
+	                    #{/if}
+	                    #{else}
+	                    	通过
+	                    #{/else}	
+                    </label>
+                    <label class="bbs-lab-detail bbs-li-time">${topic?.in_time}</label>
+                    <label class="bbs-lab-detail bbs-li-play">
+                    	<button class="btn btn-default btn-sm" onclick="javascript:if(confirm('确定要删除吗？'))location='/TopicSecure/adminDelete?topic_id=${topic?.id}'">
+                       	 删除
+                    	</button>
+                    </label>
+                    <label class="clear"></label>
+                </li>
+                #{/list}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+function setIsFeatured(topicId){
+	$.ajax({
+		url:"/topicsecure/setIsFeatured",
+		data:{id:topicId},
+		success:function(){
+			window.location.reload();
+		}
+	})
+}
+function moveSection(topicid){
+	var option = $("#"+topicid+" option:selected");
+	var sid=option.val();
+	location.href="/TopicSecure/moveSection?id="+topicid+"&sid="+sid;
+}
+</script>

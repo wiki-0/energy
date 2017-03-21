@@ -1,0 +1,32 @@
+#{extends 'main.html' /}
+<!-- 左侧 -->
+<div class="con-left">
+	<div id="main-menu" role="navigation">
+		<div id="main-menu-inner">
+			<ul class="navigation">
+				<li class="mm-dropdown"><a href="#"><span class="mm-text">功能模块</span></a>
+					<ul class="two-ul">
+					 	<li><a href="@{Other.show('dropConsume')}"><span class="mm-text">降耗模块</span></a></li>
+                        <li><a href="@{Other.show('produce')}"><span class="mm-text">产能模块</span></a></li>
+                        <li><a href="@{Other.show('storage')}"><span class="mm-text">蓄能模块</span></a></li>
+					</ul>
+				</li>
+				<li class="mm-dropdown"><a href="#"><span class="mm-text">住宅原型</span></a>
+					<ul class="two-ul">
+					 	<li><a href="@{Other.fence('excoldFence')}"><span class="mm-text">围护结构</span></a></li>
+                        <li><a href="@{Other.functionSpace('excoldFcSpace')}"><span class="mm-text">功能空间</span></a></li>
+                        <li><a href="@{Other.sysCrafts('excoldSys')}"><span class="mm-text">体系工艺</span></a></li>
+					</ul>
+				</li>
+				<li class="mm-dropdown"><a href="#"><span class="mm-text">三维展示</span></a>
+					<ul class="two-ul">
+					 	<li><a href="@{Other.building('random')}"><span class="mm-text">建筑信息</span></a></li>
+                        <li><a href="@{Other.display('random')}"><span class="mm-text">模型展示</span></a></li>
+                        <li><a href="@{Other.simulation('random')}"><span class="mm-text">模拟分析</span></a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+#{doLayout /}

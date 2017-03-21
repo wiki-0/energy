@@ -1,0 +1,99 @@
+#{extends 'bbs.html' /} #{set title:'论坛主页' /}
+<!-- 右侧 -->
+<div class="con-right">
+    <div class="mon-con">
+        <div class="bbs-new">
+            <div class="ot-tab-heading">
+                <div class="bbs-det-comm">
+                    <ul class="bbs-comm-ul">
+                        <li>
+                            版块分类
+                        </li>
+                    #{list items:sections, as:'section'}
+                        <li #{if tab == section.tab} class="active" #{/if}>
+                            <a href="index?tab=${section?.tab}">${section?.name}</a>
+                        </li>
+                    #{/list}
+                    </ul>
+                </div>
+            </div>
+            <ul class="bbs-ul">
+            #{list items:topics, as:'topic'}
+                <li>
+                    #{if topic?.top == false}
+                        <a href="show?id=${topic?.id}" class="bbs-a">${topic?.title}</a>
+                    #{/if}
+                    #{elseif topic?.top == true}
+                        <a href="show?id=${topic?.id}" class="bbs-a"><span style="color:red">[置顶]</span>${topic?.title}</a>
+                    #{/elseif}
+                    <label class="bbs-lab-detail"><img src="${topic?.user.logo}" width="22px" height="22px"/>&nbsp;${topic?.user.nickname}&nbsp;&nbsp;</label>
+                    <label class="bbs-lab-detail">评论:${topic?.reply_count}条&nbsp;&nbsp;</label>
+                    <label class="bbs-lab-detail">${topic.formatDateToZH(topic?.in_time)}</label>
+                </li>
+            #{/list}
+            #{pager limit:5/}
+            </ul>
+            <div class="list-group-item active bbs-tit">
+                <b class="b-tit">我的帖子</b>
+            </div>
+            <div class="col-md-3 col-md-offset-9">
+                <a href="/TopicSecure/create" class="btn btn-lg btn-primary bbs-ft-butt">点击发帖</a>
+            </div>
+            <ul class="bbs-ul bbs-index-ul">
+            #{list items:mytopics, as:'mytopic'}
+                <li><i class="fa fa-file-text-o"></i>
+                    <a href="show?id=${mytopic?.id}" class="bbs-a bbs-a-our">${mytopic?.title}</a>
+                    <label class="bbs-lab-detail"></label>
+                    <label class="bbs-lab-detail bbs-lab-nopad">${mytopic.formatDate(mytopic?.in_time)}&nbsp;&nbsp;&nbsp;</label>
+                    <label class="bbs-lab-detail bbs-lab-nopad">评论:${mytopic?.reply_count}条</label>
+                </li>
+            #{/list}
+            </ul>
+        </div>
+        <div class="bbs-other" >
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingOne">
+                        <h4 class="panel-title bbs-h4-tit">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                热门点击TOP10
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="panel-body">
+                            <ul class="bss-top-ul">
+                            #{list items:hotTS, as:'ts'}
+                                <li>
+                                    <a href="show?id=${ts?.id}">${ts?.title}</a>
+                                </li>
+                            #{/list}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingThree">
+                        <h4 class="panel-title bbs-h4-tit"">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                赞助商广告
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
+                        <div class="panel-body">
+                            <ul class="bss-top-ul">
+                               <li><a href="" title="">热门点击TOP1</a></li>
+                               <li><a href="" title="">热门点击TOP2</a></li>
+                               <li><a href="" title="">热门点击TOP3</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>

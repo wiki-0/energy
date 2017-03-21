@@ -1,0 +1,74 @@
+#{extends 'example.html' /} #{set title:'席里村-list' /}
+<div>
+    <div id="crudListTable">
+    #{if slist == "1"}
+        #{crud.tableTileDisable fields:['监测点','电量','电压','电流','功率','抄表时间'] }
+            #{crud.custom '监测点'}
+                第一层电表
+            #{/crud.custom}
+            #{crud.custom '电量'}
+                ${object.oneelectric_quantity}
+            #{/crud.custom}
+            #{crud.custom '电压'}
+                ${object.oneelectric_tension}
+            #{/crud.custom}
+            #{crud.custom '电流'}
+                 ${object.oneelectric_current}
+            #{/crud.custom}
+            #{crud.custom '功率'}
+                ${object.power}
+            #{/crud.custom}
+            #{crud.custom '抄表时间'}
+            %{
+                object.t_date=object.t_date+" "+object.t_time;
+                }%
+            ${object.t_date}
+            #{/crud.custom}
+        #{/crud.tableTileDisable}
+    #{/if}
+         
+    #{elseif slist == "2"}
+        #{crud.tableTileDisable fields:['监测点','电量','电压','电流','功率','抄表时间'] }
+            #{crud.custom '监测点'}
+                第二层电表
+            #{/crud.custom}
+            #{crud.custom '电量'}
+            ${object.twoelectric_quantity}
+            #{/crud.custom}
+            #{crud.custom '电压'}
+            ${object.twoelectric_tension}
+            #{/crud.custom}
+            #{crud.custom '电流'}
+            ${object.twoelectric_current}
+            #{/crud.custom}
+            #{crud.custom '功率'}
+            ${object.power}
+            #{/crud.custom}
+            #{crud.custom '抄表时间'}
+            %{
+                object.t_date=object.t_date+" "+object.t_time;
+                }%
+            ${object.t_date}
+            #{/crud.custom}
+        #{/crud.tableTileDisable}
+    #{/elseif}
+
+    #{elseif slist == "3"}
+        #{crud.tableTileDisable fields:['监测点','水量','抄表时间'] }
+            #{crud.custom '监测点'}
+                第二层总水表
+            #{/crud.custom}
+            #{crud.custom '水量'}
+            ${object.water_index}
+            #{/crud.custom}
+            #{crud.custom '抄表时间'}
+            %{
+                object.t_date=object.t_date+" "+object.t_time;
+                }%
+            ${object.t_date}
+            #{/crud.custom}
+        #{/crud.tableTileDisable}
+    #{/elseif}
+    </div>
+    <div id="crudListPagination">#{crud.pagination /}</div>
+</div>

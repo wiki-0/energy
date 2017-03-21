@@ -1,0 +1,91 @@
+#{extends 'FaultAlarmLeft.html' /}
+<style>
+    iframe{
+        width:100%;
+        border:20px;
+        height:410px;
+    }
+</style>
+<!-- 右侧 -->
+<div class="con-right">
+    <div class="cdcs-rig-d" style="margin-left:10px;background:#fff;padding:10px">
+
+        <div class="ene-rig-d" style="margin:0;padding:0">
+            <p class="ene-p-tit">>>监测数据异常告警设置</p>
+            <div class="ene-type-d" id="tableDate">
+            </div>
+        </div>
+        <label for="exampleInputName2">告警人员列表</label>
+        <div class="table">
+            <div class="ibox-content" style="height: 410px;">
+                <div id="crudListTable">
+                #{crud.tsmtable fields:['邮箱地址','用户名','权限','发送邮件'] }
+				#{/crud.tsmtable}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var resultDataTable;
+    $(document).ready(function(){
+        getMonitoringUsers();
+    });
+    function setCancel(sid) {
+        $.ajax({
+            url: "/FaultAlarm/setCancel",
+            data: {
+                id: sid,
+                type: "data"
+            },
+            success: function () {
+                window.location.reload();
+            }
+        })
+    }
+    function setInsert(sid) {
+        $.ajax({
+            url: "/FaultAlarm/setInsert",
+            data: {
+                id: sid,
+                type: "data"
+            },
+            success: function () {
+                window.location.reload();
+            }
+        })
+    }
+    function getMonitoringUsers(){
+
+        var $searchResult = $('#crudListTable table');
+        if (resultDataTable) {
+            resultDataTable.fnClearTable(false);
+            $searchResult.dataTable().fnDestroy();
+        }  else {
+            $searchResult.show();
+        }
+        resultDataTable = $('#crudListTable table').dataTable({
+            "bProcessing": true,
+            "bServerSide": false,
+            "iDisplayLength": 20,
+            "bLengthChange": false,
+            "sPaginationType":"full_numbers",
+            "oLanguage": {
+                "sZeroRecords": "没有任何数据",
+                "sSearch":"搜索 ",
+                "oPaginate": {
+                    "sFirst":"首页",
+                    "sPrevious":"上一页",
+                    "sNext":"下一页",
+                    "sLast":"最后一页"
+                }
+            },
+            "sAjaxSource": '/FaultAlarm/getMonitoringUsers',
+            "fnServerParams": function ( aoData ) {
+                $(".dataTables_filter").hide();
+                $(".dataTables_info").hide();
+                aoData.push( { "name": "Fields", "value": "email, username, permission, emailType"} );
+            }
+        });
+    }
+</script>

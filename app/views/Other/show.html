@@ -1,0 +1,22 @@
+#{extends 'OtherLeft.html' /}
+<!-- 右侧 -->
+<div class="con-right">
+	<div class="row">
+		<div class="col-sm-12">
+			<section class="panel" style="">
+				<div class="list-group-item active">
+					<h5 class="h5-tit">${other.description}</h5>
+				</div>
+			#{if user != null}
+				#{if user.username == "admin"} <a
+					href="/Other/edit?url=${other.url}">
+					<li>&nbsp;&nbsp;&nbsp;&nbsp;编辑</li>
+				</a> #{/if} <br />
+			#{/if}
+				<div class="ene-rig-d">${other.content.raw()}</div>
+			</section>
+		</div>
+
+	</div>
+</div>
+

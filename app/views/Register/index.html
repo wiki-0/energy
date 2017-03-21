@@ -1,0 +1,129 @@
+#{extends 'Secure/layout.html' /}
+
+<div class="container">
+    <form class="form-signin" id="form">
+        <h2 class="form-signin-heading">用户注册</h2>
+        <h5 class="form-signin-heading"><span id="regMsg"></span></h5>
+        <p id="username-field">
+            <input type="text" name="reg_username" id="reg_username" class="form-control" value="${flash.username}"
+                   placeholder="用户名(只能由英文、数字、下划线组成)" required autofocus>
+        </p>
+        <p>
+            <input type="text" name="reg_nickname" id="reg_nickname" class="form-control" value="${flash.nickname}"
+                   placeholder="昵称(必填)" required autofocus>
+        </p>
+        <p>
+            <label for="inputEmail" class="sr-only">Email address</label>
+            <input type="email" id="inputEmail" class="form-control" placeholder="邮箱地址(必填)" required autofocus>
+        </p>
+        <p id="password-field">
+            <div class="control-group input-append">
+            <input type="password" name="password" id="reg_password" class="form-control" placeholder="密码(必填)" data-required/>
+            </div>
+        </p>
+        <p>
+            <div class="control-group input-append">
+            <input type="password" name="confirm" id="confirm" class="form-control"  placeholder="重复密码(必填)" data-required data-conditional="confirm"/>
+            </div>
+        </p>
+        <div class="col-md-4">
+            <label class="radio-inline">
+                <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="/public/images/logo/man_head.png" checked="checked" />
+                <img src="@{'/public/images/logo/man_head.png'}" width="35px" height="35px"/>
+            </label>
+        </div>
+        <div class="col-md-4">
+            <label class="radio-inline">
+                <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="/public/images/logo/man_head01.png">
+                <img src="@{'/public/images/logo/man_head01.png'}" width="35px" height="35px"/>
+            </label>
+        </div>
+        <div class="col-md-4">
+            <label class="radio-inline">
+                <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="/public/images/logo/man_head02.png">
+                <img src="@{'/public/images/logo/man_head02.png'}" width="35px" height="35px"/>
+            </label>
+        </div>
+        <div class="col-md-4">
+            <label class="radio-inline">
+                <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="/public/images/logo/man_head03.png">
+                <img src="@{'/public/images/logo/man_head03.png'}" width="35px" height="35px"/>
+            </label>
+        </div>
+        <div class="col-md-4">
+            <label class="radio-inline">
+                <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="/public/images/logo/portrait.png">
+                <img src="@{'/public/images/logo/portrait.png'}" width="35px" height="35px"/>
+            </label>
+        </div>
+        <div class="col-md-4">
+            <label class="radio-inline">
+                <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="/public/images/logo/woman_head.png">
+                <img src="@{'/public/images/logo/woman_head.png'}" width="35px" height="35px"/>
+            </label>
+        </div>
+        <div class="col-md-6">
+            <a onclick="reg()" class="btn btn-primary btn-block" role="button">注册</a>
+        </div>
+        <div class="col-md-6">
+            <a href="@{Application.index()}" class="btn btn-default btn-block" role="button">返回</a>
+        </div>
+    </form>
+</div>
+<script>
+    $('form').validate({
+        onKeyup : true,
+        eachValidField : function() {
+            $(this).closest('div').removeClass('error').addClass('success');
+        },
+        eachInvalidField : function() {
+            $(this).closest('div').removeClass('success').addClass('error');
+        },
+        conditional : {
+            confirm : function() {
+                return $(this).val() == $('#reg_password').val();
+            }
+        }
+    });
+</script>
+<script>
+    function reg() {
+        $("#reg_btn").attr("disabled", true);
+        var username =  $("#reg_username").val();
+        var check = /^\w+$/.exec(username);
+        if(!check){
+            $("#regMsg").css("color", "red").html("请输入由英文、数字、下划线组成的用户名");
+            $("#reg_btn").attr("disabled", false);
+            return false;
+        }
+        if($('#reg_password').val()!=$('#confirm').val()){
+            $("#regMsg").css("color", "red").html("两次输入的密码不一样！");
+            $("#reg_btn").attr("disabled", false);
+            return false;
+        }
+        $.ajax({
+            url: "/Register/reg",
+            async: false,
+            cache: false,
+            type: 'post',
+            dataType: "text",
+            data: {
+                reg_username: $("#reg_username").val(),
+                reg_nickname: $("#reg_nickname").val(),
+                reg_email: $("#inputEmail").val(),
+                reg_password: $("#reg_password").val(),
+                reg_logo: $('input:radio[name="inlineRadioOptions"]:checked').val()
+            },
+            success: function (data,textStatus){
+            	var email = data;
+                location.href="/register/success?email="+email;
+            },
+            error: function(data){
+                $("#regMsg").css("color", "red").html(data.responseText);
+                $("#reg_btn").attr("disabled", false);
+            }
+        });
+    }
+</script>
+</body>
+</html>

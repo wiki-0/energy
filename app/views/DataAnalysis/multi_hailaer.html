@@ -1,0 +1,175 @@
+#{extends 'DataAanlysisLeft.html' /}	
+			
+<!-- 右侧 -->
+<div class="con-right">
+	<div class="cdcs-d">
+		<nav class="navbar navbar-default nav-stacked"><span class="navbar-brand col-white" href="#"> 测点参数 </span></nav>
+		<ul class="cdcs-ul" >
+			<li role="presentation"><a href="#" onclick="showDefault('splineCharts');splineCharts('/DataAnalysis/hailaerTemperatureCompare')">室内外空气温度逐时对比</a></li>
+			<li role="presentation"><a href="#" onclick="showDefault();splineCharts('/DataAnalysis/hailaerHumidityCompare')">室内外空气相对湿度逐时对比</a></li>
+			<li role="presentation"><a href="#" onclick="showDemo1('combinationCharts','/DataAnalysis/hailaerTemperatureMultiCompare');combinationCharts('/DataAnalysis/hailaerTemperatureMultiCompare')">室内外空气温度均峰值对比</a></li>
+			<li role="presentation"><a href="#" onclick="showDemo1('combinationCharts','/DataAnalysis/hailaerHumidityMultiCompare');combinationCharts('/DataAnalysis/hailaerHumidityMultiCompare')">室内外空气相对湿度均峰值对比</a></li>
+			<li role="presentation"><a href="#" onclick="showDefault();splineCharts('/DataAnalysis/hailaerIndoorTemperatureCompare')">不同房间室内空气温度逐时对比</a></li>
+			<li role="presentation"><a href="#" onclick="showDefault();splineCharts('/DataAnalysis/hailaerIndoorHumidityCompare')">不同房间室内空气相对湿度逐时对比</a></li>
+			<li role="presentation"><a href="#" onclick="showDemo1('combinationCharts','/DataAnalysis/hailaerIndoorTemperatureMultiCompare');combinationCharts('/DataAnalysis/hailaerIndoorTemperatureMultiCompare')">不同房间室内空气温度均峰值对比</a></li>
+		 	<li role="presentation"><a href="#" onclick="showDemo2('combinationCharts','/DataAnalysis/hailaerIndoorHumidityMultiCompare');combinationCharts('/DataAnalysis/hailaerIndoorHumidityMultiCompare')">不同房间室内空气相对湿度均峰值对比</a></li>
+			<li role="presentation"><a href="#" onclick="showDefault();splineCharts('/DataAnalysis/hailaerIndoorWallTemperatureCompare')">内壁面温度日动态变化及对比</a></li>
+		 	<li role="presentation"><a href="#" onclick="showDemo1('splineCharts','/DataAnalysis/hailaerElectricityConsumption');splineCharts('/DataAnalysis/hailaerElectricityConsumption')">用电量动态对比</a></li>
+        </ul>
+	</div>
+	<div class="cdcs-rig-d" >
+		<div class="row">
+		<div class="col-sm-12">
+			<section class="panel" style="">
+				<div class="list-group-item active" id="button-list">
+					<h5 class="h5-tit">实时监控</h5>
+				</div>
+				<div class="ene-rig-d">
+					<div id="main" style="height:400px">
+					</div>
+				</div>
+		    </section>
+		</div>
+	  </div>
+	</div>
+</div>
+		
+<script type="text/javascript">
+function showDefault(){
+	$("#button-list").empty();
+	$("#button-list").append('<h5 class="h5-tit">实时监控</h5>');
+}
+function showDemo1(functionName,url){
+	$("#button-list").empty();
+	$("#button-list").append('<button type="button" class="btn btn-info" onclick="javascript:'+functionName+'(\''+url+
+		'\')">日变化</button>&nbsp;<button type="button" class="btn btn-info" onclick="javascript:'+functionName+'(\''+url+
+		'?type=month\')">月变化</button>');
+}
+function showDemo2(functionName,url){
+	$("#button-list").empty();
+	$("#button-list").append('<button type="button" class="btn btn-info" onclick="javascript:'+functionName+'(\''+url+
+		'\')">日变化</button>&nbsp;<button type="button" class="btn btn-info" onclick="javascript:'+functionName+'(\''+url+
+		'?type=week\')">周变化</button>&nbsp;<button type="button" class="btn btn-info" onclick="javascript:'+functionName+'(\''+url+
+		'?type=month\')">月变化</button>');
+}
+Highcharts.setOptions({ global: { useUTC: false } });
+function splineCharts(url){
+	$.getJSON(url, function (data) {
+		var series = [];
+		if(typeof(data.series) != "undefined"){
+	    	$.each(data.series, function(index, element) {
+	    		var dataArrays = [];
+	    		var date;
+	    		$.each(element, function(idx, el) {
+	    			date = el.time;
+		    		date = date.replace(/-/g,"/");
+	    			dataArrays.push([Date.parse(date),el.value]);
+	    		});
+	    		series.push({
+	    			name: index,
+	    			data: dataArrays
+	    		});
+	    	});
+    	}
+		$('#main').highcharts({
+    		exporting:{
+    			enabled:false
+    		},
+    		chart: {
+   	            type: data.type,
+   	            zoomType: 'x'
+   	        },
+            title: {
+                text: data.title,
+                x: -20 //center
+            },
+            subtitle: {
+                text: data.subtitle,
+                x: -20
+            },
+            xAxis: {
+            	type: 'datetime',
+            	dateTimeLabelFormats: {
+                    day: '%e of %b'
+                }
+            },
+            yAxis: {
+                title: {
+                    text: data.yAxis_title
+                }
+            },
+            tooltip: {
+            	shared: true,
+                valueSuffix: data.tooltip
+            },
+            series: series
+        });
+	})
+}
+function combinationCharts(url){
+	$.getJSON(url, function (data) {
+		var series = [];
+		if(typeof(data.series) != "undefined"){
+	    	$.each(data.series, function(index, element) {
+	    		if(element.type == "column"){
+		    		var dataArrays = [];
+		    		$.each(element.data, function(idx, el) {
+		    			dataArrays.push(parseFloat(el));
+		    		});
+		    		series.push({
+		    			type: element.type,
+		    			name: index,
+		    			data: dataArrays
+		    		});
+	    		}
+	    	});
+	    	$.each(data.series, function(index, element) {
+	    		if(element.type != "column"){
+		    		var dataArrays = [];
+		    		$.each(element.data, function(idx, el) {
+		    			dataArrays.push(parseFloat(el));
+		    		});
+		    		series.push({
+		    			type: element.type,
+		    			name: index,
+		    			data: dataArrays
+		    		});
+	    		}
+	    	});
+    	}
+		$('#main').highcharts({
+    		exporting:{
+    			enabled:false
+    		},
+    		chart: {
+   	            zoomType: 'x'
+   	        },
+            title: {
+                text: data.title,
+                x: -20 //center
+            },
+            subtitle: {
+                text: data.subtitle,
+                x: -20
+            },
+            xAxis: {
+                categories: data.categories
+            },
+            yAxis: {
+                title: {
+                    text: data.yAxis_title
+                }
+            },
+            tooltip: {
+                useHTML: true,
+                headerFormat: '<small>{point.key}</small><table>',
+                pointFormat: '<tr><td style="color: {series.color}">{series.name}: </td>' +
+                    '<td style="text-align: right"><b>{point.y} ' + data.tooltip + '</b></td></tr>',
+                footerFormat: '</table>',
+                valueDecimals: 2
+            },
+            series: series
+        });
+	})
+}
+</script>

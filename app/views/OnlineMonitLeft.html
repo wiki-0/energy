@@ -1,0 +1,51 @@
+#{extends 'main.html' /}
+<!-- 左侧 -->
+<div class="con-left">
+	<div id="main-menu" role="navigation">
+		<div id="main-menu-inner">
+			<ul class="navigation">
+				<li class="mm-dropdown"><a href="#"><span class="mm-text">检查方案</span></a>
+					<ul class="two-ul">
+					 	<li><a href="@{OnlineMonit.monitoring()}"><span class="mm-text">河南省-方顶村</span></a></li>
+                        <li><a href="@{OnlineMonit.monitoring()}"><span class="mm-text">内蒙古-陶海牧场</span></a></li>
+                        <li><a href="@{OnlineMonit.monitoring()}"><span class="mm-text">福建省-席里村</span></a></li>
+                       	<li><a href="@{OnlineMonit.monitoring()}"><span class="mm-text">河南省-庙上村</span></a></li>
+					</ul>
+				</li>
+				<li class="mm-dropdown"><a href="#"><span class="mm-text">监控主页</span></a>
+					<ul class="two-ul">
+					 	<li><a href="@{OnlineMonit.monitorFdc()}"><span class="mm-text">河南省-方顶村</span></a></li>
+                        <li><a href="@{OnlineMonit.monitorHle()}"><span class="mm-text">内蒙古-陶海牧场</span></a></li>
+                        <li><a href="@{OnlineMonit.monitorQz()}"><span class="mm-text">福建省-席里村</span></a></li>
+                       	<li><a href="@{OnlineMonit.monitorMsc()}"><span class="mm-text">河南省-庙上村</span></a></li>
+					</ul>
+				</li>
+				<li class="mm-dropdown"><a href="#"><span class="mm-text">能耗监控</span></a>
+					<ul class="two-ul">
+					 	<li><a href="@{OnlineMonit.energyFdc()}"><span class="mm-text">河南省-方顶村</span></a></li>
+                        <li><a href="@{OnlineMonit.energyHle()}"><span class="mm-text">内蒙古-陶海牧场</span></a></li>
+                        <li><a href="@{OnlineMonit.energyQz()}"><span class="mm-text">福建省-席里村</span></a></li>
+                       	<li><a href="@{OnlineMonit.energyMsc()}"><span class="mm-text">河南省-庙上村</span></a></li>
+					</ul>
+				</li>
+				<li class="mm-dropdown"><a href="#"><span class="mm-text">室内环境</span></a>
+					<ul class="two-ul">
+					 	<li><a href="@{OnlineMonit.indoorFdc()}"><span class="mm-text">河南省-方顶村</span></a></li>
+                        <li><a href="@{OnlineMonit.indoorHle()}"><span class="mm-text">内蒙古-陶海牧场</span></a></li>
+                        <li><a href="@{OnlineMonit.indoorQz()}"><span class="mm-text">福建省-席里村</span></a></li>
+                       	<li><a href="@{OnlineMonit.indoorMsc()}"><span class="mm-text">河南省-庙上村</span></a></li>
+					</ul>
+				</li>
+				<li class="mm-dropdown"><a href="#"><span class="mm-text">室外环境</span></a>
+					<ul class="two-ul">
+					 	<li><a href="@{OnlineMonit.outdoorFdc()}"><span class="mm-text">河南省-方顶村</span></a></li>
+                        <li><a href="@{OnlineMonit.outdoorHle()}"><span class="mm-text">内蒙古-陶海牧场</span></a></li>
+                        <li><a href="@{OnlineMonit.outdoorQz()}"><span class="mm-text">福建省-席里村</span></a></li>
+                       	<li><a href="@{OnlineMonit.outdoorMsc()}"><span class="mm-text">河南省-庙上村</span></a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+#{doLayout /}

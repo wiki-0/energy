@@ -1,0 +1,283 @@
+#{extends 'OnlineMonitLeft.html' /} #{set title:'席里村-室内' /}
+<div class="con-right">
+    <div class="cdcs-d">
+        <nav class="navbar navbar-default nav-stacked">
+            <span class="navbar-brand col-white" href="#"> 测点参数 </span>
+        </nav>
+        <ul id="tree" class="ztree" style="width: 550px; overflow: auto; z-index: 500;"></ul>
+    </div>
+    <div class="cdcs-rig-d">
+        <div class="row">
+            <div class="col-sm-12">
+                <section class="panel" style="">
+                    <div class="list-group-item active">
+                        <h5 class="h5-tit">室内环境</h5>
+                    </div>
+                    <div class="select-butt-d">
+                        <label class="left-lab"></label> <label></label>
+                    </div>
+                    <div class="ene-rig-d">
+                        <p class="ene-p-tit">>>仪表/传感器基本信息</p>
+                        <div class="ene-type-d">
+                            <div id="title"></div>
+                            <table width="100%" class="ene-tab" id="tableDate">
+                            </table>
+                            <p class="ene-p-tit">>>[能耗]实时曲线（最近6小时曲线）</p>
+                            <div id="main" class="curve-d"></div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+	    (function($, window, document) {
+
+			    function addHoverDom(treeId, treeNode) {
+			        var sObj = $("#" + treeNode.tId + "_span");
+			        if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
+			        var addStr = "<span class='button remove' id='removeBtn_" + treeNode.tId
+			                + "' title='add node' onfocus='this.blur();'></span>";
+
+			        addStr += "<span class='button add' id='addBtn_" + treeNode.tId + "'></span>";
+			        addStr += "<span class='button edit' id='editBtn_" + treeNode.tId + "'></span>";
+			        sObj.after(addStr);
+			        var btn = $("#addBtn_"+treeNode.tId);
+			        if (btn) btn.bind("click", function(){
+			            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+			            zTree.addNodes(treeNode, {id:(1000 + newCount), pId:treeNode.id, name:"new node" + (newCount++)});
+			            return false;
+			        });
+			    }
+
+			    function removeHoverDom(treeId, treeNode) {
+			        $("#addBtn_"+treeNode.tId).unbind().remove();
+			        $("#removeBtn_"+treeNode.tId).unbind().remove();
+			        $("#editBtn_"+treeNode.tId).unbind().remove();
+			    }
+
+			    var setting = {
+			        check: {
+			            enable: true
+			        },
+			        view: {
+			            addHoverDom: addHoverDom,
+			            removeHoverDom: removeHoverDom,
+			            dblClickExpand: false,
+			            showLine: true,
+			            selectedMulti: false
+			        },
+			        data: {
+			            simpleData: {
+			                enable:true,
+			                idKey: "id",
+			                pIdKey: "pId",
+			                rootPId: ""
+			            }
+			        },
+			        callback: {
+			            beforeClick: function(treeId, treeNode) {
+			                var zTree = $.fn.zTree.getZTreeObj("tree");
+			                if (treeNode.isParent) {
+			                    zTree.expandNode(treeNode);
+			                    return false;
+			                } else {
+                                postDate(treeNode.file);
+			                    return true;
+			                }
+			            }
+			        }
+			    };
+			    var zNodes =[
+			        {id:1, pId:0, name:"第一层", open:true},
+			        {id:101, pId:1, name:"室内空气温度", file:"1"},
+			        {id:102, pId:1, name:"室内空气湿度", file:"2"},
+			        {id:103, pId:1, name:"室内风速", file:"3"},
+
+			        {id:2, pId:0, name:"第二层", open:false},
+			        {id:201, pId:2, name:"室内空气温度", file:"4"},
+			        {id:202, pId:2, name:"室内空气湿度", file:"5"},
+			        {id:203, pId:2, name:"内壁面温度", file:"6"},
+			        {id:204, pId:2, name:"室内风速", file:"7"},
+			    ];
+
+				$(document).ready(function(){
+					var t = $("#tree");
+					t = $.fn.zTree.init(t, setting, zNodes);
+					postDate(1);
+					var zTree = $.fn.zTree.getZTreeObj("tree");
+					zTree.selectNode(zTree.getNodeByParam("id", 101));
+				});
+
+	    })(jQuery, window, document);
+    </script>
+<script type="text/javascript">
+    Highcharts.setOptions({ global: { useUTC: false } });
+    postDate = function(type) {
+        var tableDate = $("tableDate").val();
+        var url = "/OnlineMonit/getindoorQz?testType=" + type;
+        $.post(url, function(data) {
+                    var myData = eval('(' + data + ')');
+                    getCharts(myData[0].time,type);
+                    var table = "";
+                    if (type == 1){
+                        for (var i = 0; i < myData.length; i++) {
+                            table += "<tr><td>仪表名称:温湿度传感器</td><td>仪表品牌:威盛</td></tr>"
+                                    + "<tr><td colspan='2'>最近一次采集时间:" + myData[i].time
+                                    + "</td></tr>"+"<tr><td>东卧温度:<span class='green-span'>"
+                                    + myData[i].date1_1 + "</span>" + myData[i].unit
+                                    + "</td><td>厨房温度:<span class='green-span'>"+ myData[i].date1_2 + "</span>" + myData[i].unit
+                                    + "</td></tr>"+"<tr><td>过道温度:<span class='green-span'>"
+                                    + myData[i].date2_1 + "</span>" + myData[i].unit
+                                    + "</td><td>卫生间温度:<span class='green-span'>"+ myData[i].date2_2 + "</span>" + myData[i].unit
+                                    + "</td></tr>";
+                        }
+                        $("#tableDate").html(table);
+                        var title = "<b>" + myData[0].title + "</b>";
+                        $("#title").html(title);
+                    } else if (type == 2){
+                        for (var i = 0; i < myData.length; i++) {
+                            table += "<tr><td>仪表名称:温湿度传感器</td><td>仪表品牌:威盛</td></tr>"
+                                    + "<tr><td colspan='2'>最近一次采集时间:" + myData[i].time
+                                    + "</td></tr>"+"<tr><td>东卧湿度:<span class='green-span'>"
+                                    + myData[i].date1_1 + "</span>" + myData[i].unit
+                                    + "</td><td>厨房湿度:<span class='green-span'>"+ myData[i].date1_2 + "</span>" + myData[i].unit
+                                    + "</td></tr>"+"<tr><td>过道湿度:<span class='green-span'>"
+                                    + myData[i].date2_1 + "</span>" + myData[i].unit
+                                    + "</td><td>卫生间湿度:<span class='green-span'>"+ myData[i].date2_2 + "</span>" + myData[i].unit
+                                    + "</td></tr>";
+                        }
+                        $("#tableDate").html(table);
+                        var title = "<b>" + myData[0].title + "</b>";
+                        $("#title").html(title);
+                    } else if (type == 3){
+                        for (var i = 0; i < myData.length; i++) {
+                            table += "<tr><td>仪表名称:风速传感器</td><td>仪表品牌:威盛</td></tr>"
+                                    + "<tr><td colspan='2'>最近一次采集时间:" + myData[i].time
+                                    + "</td></tr>"+"<tr><td>东卧风速:<span class='green-span'>"
+                                    + myData[i].date1_1 + "</span>" + myData[i].unit
+                                    + "</td><td>过道风速:<span class='green-span'>"+ myData[i].date1_2 + "</span>" + myData[i].unit
+                                    + "</td></tr>";
+                        }
+                        $("#tableDate").html(table);
+                        var title = "<b>" + myData[0].title + "</b>";
+                        $("#title").html(title);
+                    } else if (type == 4){
+                        for (var i = 0; i < myData.length; i++) {
+                            table += "<tr><td>仪表名称:温湿度传感器</td><td>仪表品牌:威盛</td></tr>"
+                                    + "<tr><td colspan='2'>最近一次采集时间:" + myData[i].time
+                                    + "</td></tr>"+"<tr><td>东侧南卧温度:<span class='green-span'>"
+                                    + myData[i].date1_1 + "</span>" + myData[i].unit
+                                    + "</td><td>阳台温度:<span class='green-span'>"+ myData[i].date1_2 + "</span>" + myData[i].unit
+                                    + "</td></tr>"+"<tr><td>客厅温度:<span class='green-span'>"
+                                    + myData[i].date2_1 + "</span>" + myData[i].unit
+                                    + "</td><td></td></tr>";
+                        }
+                        $("#tableDate").html(table);
+                        var title = "<b>" + myData[0].title + "</b>";
+                        $("#title").html(title);
+                    } else if (type == 5){
+                        for (var i = 0; i < myData.length; i++) {
+                            table += "<tr><td>仪表名称:温湿度传感器</td><td>仪表品牌:威盛</td></tr>"
+                                    + "<tr><td colspan='2'>最近一次采集时间:" + myData[i].time
+                                    + "</td></tr>"+"<tr><td>东侧南卧湿度:<span class='green-span'>"
+                                    + myData[i].date1_1 + "</span>" + myData[i].unit
+                                    + "</td><td>阳台湿度:<span class='green-span'>"+ myData[i].date1_2 + "</span>" + myData[i].unit
+                                    + "</td></tr>"+"<tr><td>客厅湿度:<span class='green-span'>"
+                                    + myData[i].date2_1 + "</span>" + myData[i].unit
+                                    + "</td><td></td></tr>";
+                        }
+                        $("#tableDate").html(table);
+                        var title = "<b>" + myData[0].title + "</b>";
+                        $("#title").html(title);
+                    } else if (type == 6){
+                        for (var i = 0; i < myData.length; i++) {
+                            table += "<tr><td>仪表名称:温湿度传感器</td><td>仪表品牌:威盛</td></tr>"
+                                    + "<tr><td colspan='2'>最近一次采集时间:" + myData[i].time
+                                    + "</td></tr>"+"<tr><td>东墙温度:<span class='green-span'>"
+                                    + myData[i].date1_1 + "</span>" + myData[i].unit
+                                    + "</td><td>西墙温度:<span class='green-span'>"+ myData[i].date1_2 + "</span>" + myData[i].unit
+                                    + "</td></tr>"+"<tr><td>南墙温度:<span class='green-span'>"
+                                    + myData[i].date2_1 + "</span>" + myData[i].unit
+                                    + "</td><td>北墙温度:<span class='green-span'>"+ myData[i].date2_2 + "</span>" + myData[i].unit
+                                    + "</td></tr>"+"<tr><td>屋顶温度:<span class='green-span'>"
+                                    + myData[i].date3_1 + "</span>" + myData[i].unit
+                                    + "</td><td>地面温度:<span class='green-span'>"+ myData[i].date3_2 + "</span>" + myData[i].unit
+                                    + "</td></tr>";
+                        }
+                        $("#tableDate").html(table);
+                        var title = "<b>" + myData[0].title + "</b>";
+                        $("#title").html(title);
+                    } else if (type == 7){
+                        for (var i = 0; i < myData.length; i++) {
+                            table += "<tr><td>仪表名称:风速传感器</td><td>仪表品牌:威盛</td></tr>"
+                                    + "<tr><td colspan='2'>最近一次采集时间:" + myData[i].time
+                                    + "</td></tr>"+"<tr><td>阳台风速:<span class='green-span'>"
+                                    + myData[i].date1_1 + "</span>" + myData[i].unit
+                                    + "</td><td>过道风速:<span class='green-span'>"+ myData[i].date1_2 + "</span>" + myData[i].unit
+                                    + "</td></tr>";
+                        }
+                        $("#tableDate").html(table);
+                        var title = "<b>" + myData[0].title + "</b>";
+                        $("#title").html(title);
+                    }
+                });
+    }
+    getCharts = function (lastTime, type) {
+        //最近6小时
+        var url = "/OnlineMonit/indoorQzData?testType=" + type + "&lastTime=" + lastTime;
+        $.getJSON(url, function (data) {
+            var series = [];
+            if (typeof(data.series) != "undefined") {
+                $.each(data.series, function (index, chartArray) {
+                    var datas = [];
+                    var date;
+                    $.each(chartArray, function (idx, chartData) {
+                        date = chartData.time;
+                        date = date.replace(/-/g,"/");
+                        datas.push([Date.parse(date), chartData.value]);
+                    });
+                    series.push({
+                        name: index,
+                        data: datas
+                    });
+                });
+            }
+
+            $('#main').highcharts({
+                exporting: {
+                    enabled: false
+                },
+                chart: {
+                    type: data.type,
+                    zoomType: 'x'
+                },
+                title: {
+                    text: data.title,
+                    x: -20 //center
+                },
+                subtitle: {
+                    text: data.subtitle,
+                    x: -20
+                },
+                xAxis: {
+                    type: 'datetime',
+                    dateTimeLabelFormats: {
+                        day: '%H:%M:%S'
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: data.yAxis_title
+                    }
+                },
+                tooltip: {
+                    shared: true,
+                    valueSuffix: data.tooltip
+                },
+                series: series
+            });
+        });
+    }
+</script>

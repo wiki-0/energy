@@ -1,0 +1,26 @@
+#{extends 'example.html' /} #{set title:'参数列表' /}
+<div>
+    <div id="crudListTable">
+    #{crud.tableTileDisable fields:['用户名','昵称','EMAIL','通信异常发送通知','数据异常发送通知','操作'] }
+        #{crud.custom '用户名'}
+        	${object.username}
+        #{/crud.custom}
+        #{crud.custom '昵称'}
+        	${object.nickname}
+        #{/crud.custom}
+        #{crud.custom 'EMAIL'}
+        	${object.email}
+        #{/crud.custom}
+        #{crud.custom '通信异常发送通知'}
+        	${object.sendEmailWhenCommFailure}
+        #{/crud.custom}
+        #{crud.custom '数据异常发送通知'}
+        	${object.sendEmailWhenDataAbnormal}
+        #{/crud.custom}
+        #{crud.custom '操作'}
+        	
+        #{/crud.custom}
+    #{/crud.tableTileDisable}
+    </div>
+    <div id="crudListPagination">#{crud.pagination /}</div>
+</div>

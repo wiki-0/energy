@@ -1,0 +1,28 @@
+#{extends 'SystemmanageLeft.html' /}	
+<style>
+    iframe{
+        width:100%;
+        border:20px;
+        height:410px;
+    }
+}
+</style>
+<!-- 右侧 -->
+<div class="con-right">
+	<div style="margin:3px">
+		<div class="row">
+		<div class="col-sm-12">
+			<section class="panel" style="">
+				<div class="list-group-item active">
+					<h5 class="h5-tit">系统管理用户</h5>
+				</div>
+				<div class="ene-rig-d">
+					<button class="btn btn-info" style="margin-bottom:10px" onclick="javascript:window.location.href='@{Users.blank()}'">新建</button>
+				    <iframe src="@{Users.admin_user_list()}"></iframe>
+				</div>
+		    </section> 
+		</div>
+		
+	  </div>
+	</div>
+</div>

@@ -1,0 +1,148 @@
+#{extends 'DataAanlysisLeft.html' /}	
+			<!-- 右侧 -->
+			<div class="con-right">
+				<div class="cdcs-d">
+					<nav class="navbar navbar-default nav-stacked"><span class="navbar-brand col-white" href="#"> 测点参数 </span></nav>
+					<ul id="tree" class="ztree" style="width: 550px; overflow: auto; z-index: 500;"></ul>
+				</div>
+				<div class="cdcs-rig-d" >
+					<div class="row">
+					<div class="col-sm-12">
+						<section class="panel" style="">
+							<div class="list-group-item active">
+								<h5 class="h5-tit">实时监控</h5>
+							</div>
+							<div class="ene-rig-d">
+								<p class="ene-p-tit">>>仪表/传感器基本信息</p>
+								<table width="100%" class="ene-tab">
+									<tr>
+										<td><b>仪表名称:</b>多功能水表</td>
+										<td><b>仪表品牌:</b>威盛</td>
+									</tr>
+									<tr>
+										<td><b>最近一次采集时间:<b>2015-12-30   15:50:59</td>
+										<td><b>采集数据:<b><span class="green-span">00000000</span>度</td>
+									</tr>
+								</table>
+								<p class="ene-p-tit">>>[能耗]实时曲线（最近6小时曲线）</p>
+								<div class="curve-d">
+									
+								</div>
+							</div>
+					    </section> 
+					</div>
+					
+				  </div>
+				</div>
+			</div>
+		
+<script>
+    //测点参数tree-JS
+	    (function($, window, document, undefined) {
+
+			    function addHoverDom(treeId, treeNode) {
+			        var sObj = $("#" + treeNode.tId + "_span");
+			        if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
+			        var addStr = "<span class='button remove' id='removeBtn_" + treeNode.tId
+			                + "' title='add node' onfocus='this.blur();'></span>";
+			
+			        addStr += "<span class='button add' id='addBtn_" + treeNode.tId + "'></span>";
+			        addStr += "<span class='button edit' id='editBtn_" + treeNode.tId + "'></span>";
+			        sObj.after(addStr);
+			        var btn = $("#addBtn_"+treeNode.tId);
+			        if (btn) btn.bind("click", function(){
+			            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+			            zTree.addNodes(treeNode, {id:(1000 + newCount), pId:treeNode.id, name:"new node" + (newCount++)});
+			            return false;
+			        });
+			    }
+			
+			    function removeHoverDom(treeId, treeNode) {
+			        $("#addBtn_"+treeNode.tId).unbind().remove();
+			        $("#removeBtn_"+treeNode.tId).unbind().remove();
+			        $("#editBtn_"+treeNode.tId).unbind().remove();
+			    }
+			
+			    var setting = {
+			        check: {
+			            enable: true
+			        },
+			        view: {
+			            addHoverDom: addHoverDom,
+			            removeHoverDom: removeHoverDom,
+			            dblClickExpand: false,
+			            showLine: true,
+			            selectedMulti: false
+			        },
+			        data: {
+			            simpleData: {
+			                enable:true,
+			                idKey: "id",
+			                pIdKey: "pId",
+			                rootPId: ""
+			            }
+			        },
+			        callback: {
+			            beforeClick: function(treeId, treeNode) {
+			                var zTree = $.fn.zTree.getZTreeObj("tree");
+			                if (treeNode.isParent) {
+			                    zTree.expandNode(treeNode);
+			                    return false;
+			                } else {
+			                	postDate(treeNode.file);
+			                    return true;
+			                }
+			            }
+			        }
+			    };
+			    var zNodes =[
+			        {id:1, pId:0, name:"东窖", open:true},
+			        {id:101, pId:1, name:"室内实时温度", file:"1"},
+			        {id:102, pId:1, name:"相对温度", file:"2"},
+			        {id:103, pId:1, name:"室内空气流速", file:"3"},
+			        {id:104, pId:1, name:"地面壁面温度", file:"5"},
+			        {id:105, pId:1, name:"内端面温度", file:"6"},
+			        {id:106, pId:1, name:"外端面温度", file:"7"},
+			        {id:107, pId:1, name:"左侧墙温度", file:"8"},
+			        {id:108, pId:1, name:"右侧墙温度", file:"9"},
+			        
+			        {id:2, pId:0, name:"东厢房", open:false},
+			        {id:201, pId:2, name:"室内实时温度", file:"1"},
+			        {id:202, pId:2, name:"相对温度", file:"2"},
+			        {id:203, pId:2, name:"室内空气流速", file:"3"},
+			        {id:204, pId:2, name:"地面壁面温度", file:"5"},
+			        {id:205, pId:2, name:"内端面温度", file:"6"},
+			        {id:206, pId:2, name:"外端面温度", file:"7"},
+			        {id:207, pId:2, name:"左侧墙温度", file:"8"},
+			        {id:208, pId:2, name:"右侧墙温度", file:"9"},
+			        
+			        {id:3, pId:0, name:"西厢房", open:false},
+			        {id:301, pId:3, name:"室内实时温度", file:"1"},
+			        {id:302, pId:3, name:"相对温度", file:"2"},
+			        {id:303, pId:3, name:"室内空气流速", file:"3"},
+			        {id:304, pId:3, name:"地面壁面温度", file:"5"},
+			        {id:305, pId:3, name:"内端面温度", file:"6"},
+			        {id:306, pId:3, name:"外端面温度", file:"7"},
+			        {id:307, pId:3, name:"左侧墙温度", file:"8"},
+			        {id:308, pId:3, name:"右侧墙温度", file:"9"},
+			        
+			        {id:4, pId:0, name:"水电能耗", open:false},
+			        {id:401, pId:4, name:"室内实时温度", file:"1"},
+			        {id:402, pId:4, name:"相对温度", file:"2"},
+			        {id:403, pId:4, name:"室内空气流速", file:"3"},
+			        {id:404, pId:4, name:"地面壁面温度", file:"5"},
+			        {id:405, pId:4, name:"内端面温度", file:"6"},
+			        {id:406, pId:4, name:"外端面温度", file:"7"},
+			        {id:407, pId:4, name:"左侧墙温度", file:"8"},
+			        {id:408, pId:4, name:"右侧墙温度", file:"9"},
+			    ];
+			
+			    $(document).ready(function(){
+			        var t = $("#tree");
+			        t = $.fn.zTree.init(t, setting, zNodes);
+			        var zTree = $.fn.zTree.getZTreeObj("tree");
+			        zTree.selectNode(zTree.getNodeByParam("id", 101));
+			    });
+			
+	    })(jQuery, window, document);
+</script>

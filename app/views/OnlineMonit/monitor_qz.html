@@ -1,0 +1,373 @@
+#{extends 'OnlineMonitLeft.html' /}
+<style>
+    iframe{
+        width:100%;
+        border:20px;
+        height:410px;
+    }
+</style>
+<div class="con-right">
+    <div class="cdcs-d">
+        <nav class="navbar navbar-default nav-stacked">
+            <span class="navbar-brand col-white" href="#"> 测点参数 </span>
+        </nav>
+        <ul id="tree" class="ztree"
+            style="width: 550px; overflow: auto; z-index: 500;"></ul>
+    </div>
+    <div class="cdcs-rig-d">
+        <div class="row">
+            <div class="col-sm-12">
+                <section class="panel">
+                    <div class="list-group-item active">
+                        <h5 class="h5-tit">能耗实时数据</h5>
+                    </div>
+                    <div class="ene-rig-d">
+                        <p class="ene-p-tit">>>仪表/传感器基本信息</p>
+                        <div class="ene-type-d" id="tableDate">
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <section class="panel">
+                    <div class="list-group-item active">
+                        <h5 class="h5-tit">室内实时数据</h5>
+                    </div>
+                    <div class="col-sm-6">
+                        <div style="width: 400px; height: 200px; margin: 0 auto">
+                            <div id="lying_t1" style="width: 400px; height: 200px;"></div>
+                            <div id="lying_h1" style="width: 400px; height: 200px;"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div style="width: 400px; height: 200px; margin: 0 auto">
+                            <div id="kitchen_t1" style="width: 300px; height: 200px; float: left"></div>
+                            <div id="kitchen_h1" style="width: 300px; height: 200px; float: left"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div style="width: 400px; height: 200px; margin: 0 auto">
+                            <div id="aisle_t1" style="width: 400px; height: 200px;"></div>
+                            <div id="aisle_h1" style="width: 400px; height: 200px;"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div style="width: 400px; height: 200px; margin: 0 auto">
+                            <div id="washroom_t1" style="width: 300px; height: 200px; float: left"></div>
+                            <div id="washroom_h1" style="width: 300px; height: 200px; float: left"></div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    (function($, window, document) {
+
+        function addHoverDom(treeNode) {
+            var sObj = $("#" + treeNode.tId + "_span");
+            if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
+            var addStr = "<span class='button remove' id='removeBtn_" + treeNode.tId
+                    + "' title='add node' onfocus='this.blur();'></span>";
+
+            addStr += "<span class='button add' id='addBtn_" + treeNode.tId + "'></span>";
+            addStr += "<span class='button edit' id='editBtn_" + treeNode.tId + "'></span>";
+            sObj.after(addStr);
+            var btn = $("#addBtn_"+treeNode.tId);
+            if (btn) btn.bind("click", function(){
+                var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+                zTree.addNodes(treeNode, {id:(1000 + newCount), pId:treeNode.id, name:"new node" + (newCount++)});
+                return false;
+            });
+        }
+
+        function removeHoverDom(treeNode) {
+            $("#addBtn_"+treeNode.tId).unbind().remove();
+            $("#removeBtn_"+treeNode.tId).unbind().remove();
+            $("#editBtn_"+treeNode.tId).unbind().remove();
+        }
+
+        var setting = {
+            check: {
+                enable: true
+            },
+            view: {
+                addHoverDom: addHoverDom,
+                removeHoverDom: removeHoverDom,
+                dblClickExpand: false,
+                showLine: true,
+                selectedMulti: false
+            },
+            data: {
+                simpleData: {
+                    enable:true,
+                    idKey: "id",
+                    pIdKey: "pId",
+                    rootPId: ""
+                }
+            },
+            callback: {
+                beforeClick: function(treeId, treeNode) {
+                    var zTree = $.fn.zTree.getZTreeObj("tree");
+                    if (treeNode.isParent) {
+                        zTree.expandNode(treeNode);
+                        return false;
+                    } else {
+                        postDate(treeNode.file);
+                        return true;
+                    }
+                }
+            }
+        };
+        var zNodes =[
+            {id:1, pId:0, name:"第一层", open:true},
+            {id:101, pId:1, name:"一层电表", file:"1"},
+            {id:2, pId:0, name:"第二层", open:true},
+            {id:201, pId:2, name:"二层电表", file:"2"},
+            {id:202, pId:2, name:"总水表", file:"3"},
+        ];
+
+        $(document).ready(function(){
+            var t = $("#tree");
+            t = $.fn.zTree.init(t, setting, zNodes);
+            postDate(1);
+            var zTree = $.fn.zTree.getZTreeObj("tree");
+            zTree.selectNode(zTree.getNodeByParam("id", 101));
+
+        });
+
+    })(jQuery, window, document);
+</script>
+<script>
+    //表格
+    postDate = function(type) {
+        var tableDate = $("tableDate").val();
+        var url = "/OnlineMonit/getindoorQz?testType=" + type;
+        getCharts(type);
+        $.post(url,
+                function() {
+                    var table = "";
+                    if (type == 1){
+                        table = "<iframe src='/EnergyMonitQuanzhous/list?type=1' style='height: 400px'></iframe>";
+                    }
+                    else if (type == 2){
+                        table = "<iframe src='/EnergyMonitQuanzhous/list?type=2' style='height: 400px'></iframe>";
+                    }
+                    else if (type == 3){
+                        table = "<iframe src='/EnergyMonitQuanzhous/list?type=3' style='height: 400px'></iframe>";
+                    }
+                    $("#tableDate").html(table);
+                });
+    }
+    //仪表
+    getCharts = function (type) {
+        var url = "/OnlineMonit/dataEneryMonitQz?testType=" + type;
+        $.post(url, function (data) {
+                    var myData = eval('(' + data + ')');
+                    var gaugeOptions = {
+
+                        chart: {
+                            type: 'solidgauge'
+                        },
+
+                        title: null,
+
+                        pane: {
+                            center: ['50%', '85%'],
+                            size: '140%',
+                            startAngle: -90,
+                            endAngle: 90,
+                            background: {
+                                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#EEE',
+                                innerRadius: '60%',
+                                outerRadius: '100%',
+                                shape: 'arc'
+                            }
+                        },
+
+                        tooltip: {
+                            enabled: false
+                        },
+
+                        // the value axis
+                        yAxis: {
+                            stops: [
+                                [0.4, '#00ffff'], // blue
+                                [0.6, '#DDDF0D'], // yellow
+                                [0.8, '#DF5353'] // red
+                            ],
+                            lineWidth: 0,
+                            minorTickInterval: null,
+                            tickPixelInterval: 400,
+                            tickWidth: 0,
+                            title: {
+                                y: -70
+                            },
+                            labels: {
+                                y: 16
+                            }
+                        },
+
+                        plotOptions: {
+                            solidgauge: {
+                                dataLabels: {
+                                    y: 5,
+                                    borderWidth: 0,
+                                    useHTML: true
+                                }
+                            }
+                        }
+                    };
+                    $('#lying_t1').highcharts(Highcharts.merge(gaugeOptions, {
+                        yAxis: {
+                            min: -50,
+                            max: 50,
+                            title: {
+                                text: myData[0].t1
+                            }
+                        },
+                        credits: {
+                            enabled: false
+                        },
+                        series: [{
+                            name: '温度',
+                            data: [myData[0].lying_t1],
+                            dataLabels: {
+                                format: '<div style="text-align:center"><span style="font-size:25px;color:' +
+                                ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y}°C</span><br/>' +
+                                '<span style="font-size:12px;color:silver">室内实时温度</span></div>'
+                            }
+                        }]
+                    }));
+                    $('#lying_h1').highcharts(Highcharts.merge(gaugeOptions, {
+                        yAxis: {
+                            min: 0,
+                            max: 100
+                        },
+                        series: [{
+                            name: '湿度',
+                            data: [myData[0].lying_h1],
+                            dataLabels: {
+                                format: '<div style="text-align:center"><span style="font-size:25px;color:' +
+                                ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y:.1f}%</span><br/>' +
+                                '<span style="font-size:12px;color:silver">室内相对湿度</span></div>'
+                            }
+                        }]
+                    }));
+
+                    $('#kitchen_t1').highcharts(Highcharts.merge(gaugeOptions, {
+                        yAxis: {
+                            min: -50,
+                            max: 50,
+                            title: {
+                                text: myData[0].t2
+                            }
+                        },
+                        credits: {
+                            enabled: false
+                        },
+                        series: [{
+                            name: '温度',
+                            data: [myData[0].kitchen_t1],
+                            dataLabels: {
+                                format: '<div style="text-align:center"><span style="font-size:25px;color:' +
+                                ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y}°C</span><br/>' +
+                                '<span style="font-size:12px;color:silver">室内实时温度</span></div>'
+                            }
+                        }]
+                    }));
+                    $('#kitchen_h1').highcharts(Highcharts.merge(gaugeOptions, {
+                        yAxis: {
+                            min: 0,
+                            max: 100
+                        },
+                        series: [{
+                            name: '湿度',
+                            data: [myData[0].kitchen_h1],
+                            dataLabels: {
+                                format: '<div style="text-align:center"><span style="font-size:25px;color:' +
+                                ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y:.1f}%</span><br/>' +
+                                '<span style="font-size:12px;color:silver">室内相对湿度</span></div>'
+                            }
+                        }]
+                    }));
+
+                    $('#aisle_t1').highcharts(Highcharts.merge(gaugeOptions, {
+                        yAxis: {
+                            min: -50,
+                            max: 50,
+                            title: {
+                                text: myData[0].t3
+                            }
+                        },
+                        credits: {
+                            enabled: false
+                        },
+                        series: [{
+                            name: '温度',
+                            data: [myData[0].aisle_t1],
+                            dataLabels: {
+                                format: '<div style="text-align:center"><span style="font-size:25px;color:' +
+                                ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y}°C</span><br/>' +
+                                '<span style="font-size:12px;color:silver">室内实时温度</span></div>'
+                            }
+                        }]
+                    }));
+                    $('#aisle_h1').highcharts(Highcharts.merge(gaugeOptions, {
+                        yAxis: {
+                            min: 0,
+                            max: 100
+                        },
+                        series: [{
+                            name: '湿度',
+                            data: [myData[0].aisle_h1],
+                            dataLabels: {
+                                format: '<div style="text-align:center"><span style="font-size:25px;color:' +
+                                ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y:.1f}%</span><br/>' +
+                                '<span style="font-size:12px;color:silver">室内相对湿度</span></div>'
+                            }
+                        }]
+                    }));
+
+                    $('#washroom_t1').highcharts(Highcharts.merge(gaugeOptions, {
+                        yAxis: {
+                            min: -50,
+                            max: 50,
+                            title: {
+                                text: myData[0].t4
+                            }
+                        },
+                        credits: {
+                            enabled: false
+                        },
+                        series: [{
+                            name: '温度',
+                            data: [myData[0].washroom_t1],
+                            dataLabels: {
+                                format: '<div style="text-align:center"><span style="font-size:25px;color:' +
+                                ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y}°C</span><br/>' +
+                                '<span style="font-size:12px;color:silver">室内实时温度</span></div>'
+                            }
+                        }]
+                    }));
+                    $('#washroom_h1').highcharts(Highcharts.merge(gaugeOptions, {
+                        yAxis: {
+                            min: 0,
+                            max: 100
+                        },
+                        series: [{
+                            name: '湿度',
+                            data: [myData[0].washroom_h1],
+                            dataLabels: {
+                                format: '<div style="text-align:center"><span style="font-size:25px;color:' +
+                                ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y:.1f}%</span><br/>' +
+                                '<span style="font-size:12px;color:silver">室内相对湿度</span></div>'
+                            }
+                        }]
+                    }));
+                });
+    }
+</script>

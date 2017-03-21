@@ -1,0 +1,136 @@
+#{extends 'DemonstrationLeft.html' /}
+<!-- 右侧 -->
+<div class="con-right">
+	<!--用父容器来控制宽度-->
+	<div style="width:100%">
+		 <!--用当前元素来控制高度-->
+		<textarea id="textarea1" style="height:1000px;">
+	    	<h1>1.区位导航图</h1>
+	    	<div>
+	    		<label for="">区位及简介</label>
+				<p>&nbsp;&nbsp;海拉尔区是隶属内蒙古自治区呼伦贝尔市的一个市辖区，是呼伦贝尔市政治、经济文化中心。该区位于内蒙古自治区东北部，区域范围为东经119°30′48〃— 120°35′36〃；北纬49°5′44〃—19°27′15〃，面积1440平方公里。</p>
+				<p>&nbsp;&nbsp;海拉尔地处内蒙古自治区东北部，呼伦贝尔市中部偏西南，大兴安岭西麓的低山丘陵与呼伦贝尔高平原东部边缘的接合地带。</p>
+				<img src="../img/www.png" alt="地理位置" align="middle">
+	    	</div>
+	    	<h1>2.空间环境</h1>
+	    	<h2>2.1自然地域环境</h2>
+	    	<div>&nbsp;&nbsp;海拉尔属中温带半湿润半干旱大陆性季风气候。由于纬度偏高，远离海洋，加之大兴安岭的屏障作用，使湿润的海洋性气候团的影响减弱，大部分时间在西伯利亚高压的控制之下，形成了如下区域气候特点：春季多大风而少雨，蒸发量大；夏季温凉而短促，降水集中；秋季降温快，霜冻早；冬季严寒漫长，地面积雪时间长。年均气温.55摄氏度，比历年平均值高1.2摄氏度。年降水量3626毫米，比历年平均降水量少10.1毫米。7月5日日最大降水量43.4毫米。8月8日日最高气温32.9摄氏度；1月2日日最低气温-37.8摄氏度。年日照时数2049.5小时，无霜期日数126天。全年无大风日数。</div><br>
+	    	<img src="../img/zrdy.png" alt="地理位置" align="middle">
+		</textarea>	
+	</div>
+	<button id="btn1" class="btn btn-success">save</button>
+</div>
+
+<script type="text/javascript">
+	// 为页面所有的editor配置全局的密钥
+    wangEditor.config.mapAk = 'pbhgPeSacd9zV5TBSwcx5XIE9zfPIDmG';  // 此处换成自己申请的密钥
+
+    // 阻止输出log
+    wangEditor.config.printLog = false;
+
+	var editor = new wangEditor('textarea1');
+
+
+	// 为当前的editor配置密钥
+    editor.config.mapAk = 'pbhgPeSacd9zV5TBSwcx5XIE9zfPIDmG';  // 此处换成自己申请的密钥
+
+     // 关闭菜单栏fixed
+    editor.config.menuFixed = false;
+
+    // 修改菜单栏fixed的上边距（单位 px）
+    // editor.config.menuFixed = 50;
+
+    // 将全屏时z-index修改为20000
+    editor.config.zindex = 20000;
+
+	 // 自定义菜单
+    editor.config.menus = [
+        '|',     // '|' 是菜单组的分割线
+        'bold',
+        'underline',
+        'italic',
+        'strikethrough',
+        'eraser',
+        'forecolor',
+        '|',
+        'quote',
+        'fontfamily',
+        'fontsize',
+        'head',
+        'unorderlist',
+        'orderlist',
+        'alignleft',
+        'aligncenter',
+        'alignright',
+        '|',
+        'link',
+        'unlink',
+        '|',
+        'img',
+        'video',
+        'location',
+        '|',
+        'undo',
+        'redo',
+        'fullscreen'
+     ];
+
+     // 颜色
+    editor.config.colors = {
+        '#880000': '暗红色',
+        '#800080': '紫色',
+        '#ff0000': '红色'
+    };
+
+    // 字体
+    editor.config.familys = [
+        '宋体', '黑体', '楷体', '微软雅黑',
+        'Arial', 'Verdana', 'Georgia'
+    ];
+
+    // 字号
+    editor.config.fontsizes = {
+        // 格式：'value': 'title'
+        1: '10px',
+        2: '13px',
+        3: '16px',
+        4: '19px',
+        5: '22px',
+        6: '25px',
+        7: '28px'
+    };
+
+
+	 // 使用英语
+    editor.config.lang = wangEditor.langs['zh-cn'];
+
+ 	// 上传图片（举例）
+    editor.config.uploadImgUrl = '/Demonstration/upload';
+
+    // 配置自定义参数（举例）
+    editor.config.uploadParams = {
+        
+    };
+    
+ 	// 自定义load事件
+    editor.config.uploadImgFns.onload = function (resultText, xhr) {
+        // resultText 服务器端返回的text
+        // xhr 是 xmlHttpRequest 对象，IE8、9中不支持
+
+        // 如果 resultText 是图片的url地址，可以这样插入图片：
+        editor.command(null, 'insertHtml', '<img src="' + resultText + '" style="max-width:100%;"/>');
+        // 如果不想要 img 的 max-width 样式，也可以这样插入：
+        // editor.command(null, 'InsertImage', resultText);
+    };
+    editor.create();
+
+    $('#btn1').click(function () {
+        // 获取编辑器区域完整html代码
+        var html = editor.$txt.html();
+
+        $('#textarea1').html(html);
+      
+    });
+</script>
+
+

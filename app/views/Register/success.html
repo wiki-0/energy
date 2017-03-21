@@ -1,0 +1,46 @@
+#{extends 'Secure/layout.html' /}
+
+<div class="container">
+	<form id="form_user">
+		<h2>您已注册成功！</h2>
+		<table>
+			<tbody>
+				<tr>
+					<td style="line-height: 24px; padding-top: 10px;">请 <em
+						style="font-style: normal; color: #c00;">打开邮箱 ${email}
+							收取账号激活邮件</em>，<br>
+							并点击邮件中的激活链接，方可使用该账号。<br>
+					<br> 如果您一直收不到激活邮件，请检查：
+						<ol>
+							<li>1. 请确认是否填写正确的邮箱地址
+							<li>2. 请注意查看您邮箱中的垃圾邮件，可能邮件被误杀了</li>
+						</ol> <br>
+					<a href="/secure/login">进入登录页面»</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+	</form>
+</div>
+<script>
+$.ajax({
+    url: "/Register/sendEmail",
+    async: true,
+    cache: false,
+    type: 'post',
+    dataType: "text",
+    data: {
+  		email: '${email}'
+    },
+    success: function (data,textStatus){
+    	
+    },
+    error: function(data){
+      
+    }
+});
+</script>
+
+</body>
+</html>

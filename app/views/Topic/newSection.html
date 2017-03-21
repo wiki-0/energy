@@ -1,0 +1,39 @@
+#{extends 'bbs.html' /} #{set title:'后台帖子管理' /}
+<!-- 右侧 -->
+<div class="con-right">
+    <div class="bbs-new">
+        <div class="panel panel-default">
+            <div class="panel-heading ot-tab-heading cre-head-bc" >
+                          添加分类
+            </div>
+            <div class="panel-body new-sec-body">
+            	<form action="/TopicSecure/saveSection" method="post">
+	        	<div class="row form-group">
+	        		<label class="col-sm-2 control-label">名称：</label>
+	        		<div class="col-sm-6"><input class="form-control" type="text" name="name" /></div>
+	        	</div><br />
+	        	<div class="row form-group">
+	        		<label class="col-sm-2 control-label">标签：</label>
+	        		<div class="col-sm-6"><input class="form-control" type="text" name="tab" /></div>
+	        	</div><br />
+	        	<div class="row form-group">
+	        		<label class="col-sm-2 control-label">是否显示：</label>
+	        		<div class="col-sm-6">
+						<select name="show_status" class="form-control">
+							<option value="true">是</option>
+							<option value="false">否</option>
+						</select>
+					</div>
+	        	</div><br />
+	        	<div class="row form-group">
+	        		<label class="col-sm-2 control-label">版块排序：</label>
+	        		<div class="col-sm-6"><input class="form-control" type="text" name="display_index" /></div>
+	        	</div><br />
+	        	<div class="row form-group new-sec-butt">
+	        		<button  class="btn btn-success" type="submit">提交</button>
+	        	</div>
+	        	</form>
+            </div>
+        </div>
+    </div>
+</div>

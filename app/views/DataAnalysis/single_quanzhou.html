@@ -1,0 +1,346 @@
+ #{extends 'DataAanlysisLeft.html' /}	
+<!-- 右侧 -->
+<div class="con-right">
+	<div class="cdcs-d">
+		<nav class="navbar navbar-default nav-stacked">
+			<span class="navbar-brand col-white" href="#"> 测点参数 </span>
+		</nav>
+		<ul id="tree" class="ztree"
+			style="width: 550px; overflow: auto; z-index: 500;"></ul>
+	</div>
+	<div class="cdcs-rig-d" >
+		<div class="row">
+			<div class="col-sm-12">
+				<section class="panel" style="">
+					<div class="list-group-item active">
+						<button type="button" class="btn btn-info"  aria-haspopup="true" aria-expanded="false" onclick="loadHoursData()">
+									   逐时分析
+						</button>
+						<button type="button" class="btn btn-info"  aria-haspopup="true" aria-expanded="false" onclick="loadWeekData()">
+									   逐日分析
+						</button>
+						<button type="button" class="btn btn-info"  aria-haspopup="true" aria-expanded="false" onclick="getMonthData()">
+									   逐月分析
+						</button>
+					</div>
+					<div class="ene-rig-d">
+						<div id="main" style="height: 400px"></div>
+					</div>
+				</section>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+//测点参数tree-JS
+	(function($, window, document, undefined){
+		var setting = {
+		        check: {
+		            enable: true
+		        },
+		        data: {
+		            simpleData: {
+		                enable:true,
+		                idKey: "id",
+		                pIdKey: "pId",
+		                rootPId: ""
+		            }
+		        },
+		        callback: {
+		            beforeClick: function(treeId, treeNode) {
+		                var zTree = $.fn.zTree.getZTreeObj("tree");
+		                if (treeNode.isParent) {
+		                    zTree.expandNode(treeNode);
+		                    return false;
+		                } else {
+		                	loadHighCharts(treeNode.file);
+		                    return true;
+		                }
+		            }
+		        }
+		    };
+		
+		var zNodes =[
+	        {id:1, pId:0, name:"一楼室内温湿度", open:true},
+	        {id:101, pId:1, name:"厨房温度", file:"onekitchen_temperature"},
+	        {id:102, pId:1, name:"卫生间温度", file:"onewashroom_temperature"},
+	        {id:103, pId:1, name:"东卧温度", file:"onelyingeast_temperature"},
+	        {id:104, pId:1, name:"过道温度", file:"oneaisle_temperature"},
+	        {id:105, pId:1, name:"厨房湿度", file:"onekitchen_humidity"},
+	        {id:106, pId:1, name:"卫生间湿度", file:"onewashroom_humidity"},
+	        {id:107, pId:1, name:"东卧湿度", file:"onelyingeast_humidity"},
+	        {id:108, pId:1, name:"过道湿度", file:"oneaisle_humidity"},
+	       
+	        
+	        {id:2, pId:0, name:"二楼室内温湿度", open:false},
+	        {id:201, pId:2, name:"客厅温度", file:"twoparlour_temperature"},
+	        {id:203, pId:2, name:"东卧温度", file:"twolyingeast_temperature"},
+	        {id:204, pId:2, name:"阳台温度", file:"twobalcony_temperature"},
+	        {id:205, pId:2, name:"客厅湿度", file:"twoparlour_humidity"},
+	        {id:206, pId:2, name:"东卧湿度", file:"twolyingeast_humidity"},
+	        {id:207, pId:2, name:"阳台湿度", file:"twobalcony_humidity"},
+	        
+	        {id:3, pId:0, name:"二楼壁面温度", open:false},
+	        {id:301, pId:3, name:"东墙温度", file:"wall_east"},
+	        {id:302, pId:3, name:"西墙温度", file:"wall_west"},
+	        {id:303, pId:3, name:"南墙温度", file:"wall_sounth"},
+	        {id:304, pId:3, name:"北墙温度", file:"wall_north"},
+	        {id:304, pId:3, name:"地面温度", file:"wall_ground"},
+	        {id:304, pId:3, name:"屋顶温度", file:"wall_roof"},
+	        
+	        {id:4, pId:0, name:"室内风速", open:false},
+	        {id:401, pId:4, name:"一楼东卧风速", file:"onelyingeast_windspeed"},
+	        {id:402, pId:4, name:"一楼过道风速", file:"oneaisle_windspeed"},
+	        {id:403, pId:4, name:"二楼东卧风速", file:"twolyingeast_windspeed"},
+	        {id:404, pId:4, name:"二楼过道风速", file:"twoaisle_windspeed"},
+	   
+	        
+	        {id:5, pId:0, name:"电能耗情况", open:false},
+	        {id:501, pId:5, name:"一楼电量", file:"oneelectric_quantity"},
+	        {id:502, pId:5, name:"一楼电压", file:"oneelectric_tension"},
+	        {id:503, pId:5, name:"一楼电流", file:"oneelectric_current"},
+	        {id:504, pId:5, name:"一楼功耗", file:"onepower"},
+	        {id:504, pId:5, name:"二楼电量", file:"twoelectric_quantity"},
+	        {id:504, pId:5, name:"二楼电压", file:"twoelectric_tension"},
+	        {id:504, pId:5, name:"二楼电流", file:"twoelectric_current"},
+	        {id:504, pId:5, name:"二楼功耗", file:"twopower"},
+	        
+	        {id:6, pId:0, name:"室外参数", open:false},
+	        {id:601, pId:6, name:"气压", file:"spec_barometric"},
+	        {id:602, pId:6, name:"风速", file:"spec_wind_speed"},
+	        {id:603, pId:6, name:"总辐射", file:"spec_total_radiation"},
+	        {id:604, pId:6, name:"直接辐射", file:"spec_direct_radiation"},
+	        {id:605, pId:6, name:"室外温度", file:"sepc_outdoor_temperature"},
+	        {id:606, pId:6, name:"室外湿度", file:"spec_outdoor_humidity"},
+	        
+	        {id:7, pId:0, name:"用水量", open:false},
+	        {id:701, pId:7, name:"水量信息", file:"water_index"},
+		];
+		
+		 $(document).ready(function(){
+		        var t = $("#tree");
+		        t = $.fn.zTree.init(t, setting, zNodes);
+		        loadHighCharts('onekitchen_temperature');
+		        var zTree = $.fn.zTree.getZTreeObj("tree");
+		        zTree.selectNode(zTree.getNodeByParam("id", 101));
+		 });
+	})(jQuery, window, document);
+</script>
+
+<script type="text/javascript">
+	Highcharts.setOptions({
+		global : {
+			useUTC : false
+		}
+	});
+	var global_type;
+	//左侧 z-tree 默认实现逐时分析
+	loadHighCharts = function(type) {
+		global_type=type;
+		loadHoursData();
+	}
+	//逐时分析--过去24小时的数据
+	loadHoursData = function(){
+		var url='/DataAnalysis/quanzhouDemo?type='+global_type;
+		$.getJSON(url, function(data) {
+			var series = [];
+			if (typeof (data.series) != "undefined") {
+				$.each(data.series, function(index,
+						chartArray) {
+					var datas = [];
+					var date;
+					$.each(chartArray, function(idx,
+							chartData) {
+						date = chartData.time;
+						datas.push([ Date.parse(date),
+								chartData.value ]);
+					});
+					series.push({
+						name : index,
+						data : datas
+					});
+				});
+			}
+
+			$('#main').highcharts({
+				exporting : {
+					enabled : false
+				},
+				chart : {
+					type : data.type,
+					zoomType : 'x'
+				},
+				title : {
+					text : data.title,
+					x : -20
+				//center
+				},
+				subtitle : {
+					text : data.subtitle,
+					x : -20
+				},
+				xAxis : {
+					type : 'datetime',
+					dateTimeLabelFormats : {
+						day : '%H:%M'
+					}
+				},
+				yAxis : {
+					title : {
+						text : data.yAxis_title
+					}
+				},
+				tooltip : {
+					shared : true,
+					valueSuffix : data.tooltip
+				},
+				series : series
+			});
+		});
+		
+	}
+	
+	//逐日分析--过去七天的数据
+	loadWeekData=function(){
+		var url='/DataAnalysis/quanzhouPast7DaysData?type='+global_type;
+		$.getJSON(url, function (data){
+			var series = [];
+			if(typeof(data.series) != "undefined"){
+		    	$.each(data.series, function(index, element) {
+		    		if(element.type == "column"){
+			    		var dataArrays = [];
+			    		$.each(element.data, function(idx, el) {
+			    			dataArrays.push(parseFloat(el));
+			    		});
+			    		series.push({
+			    			type: element.type,
+			    			name: index,
+			    			data: dataArrays
+			    		});
+		    		}
+		    	});
+		    	$.each(data.series, function(index, element) {
+		    		if(element.type != "column"){
+			    		var dataArrays = [];
+			    		$.each(element.data, function(idx, el) {
+			    			dataArrays.push(parseFloat(el));
+			    		});
+			    		series.push({
+			    			type: element.type,
+			    			name: index,
+			    			data: dataArrays
+			    		});
+		    		}
+		    	});
+			}
+			
+			
+			$('#main').highcharts({
+				exporting:{
+	    			enabled:false
+	    		},
+	    		chart: {
+    	            zoomType: 'x'
+    	        },
+	            title: {
+	                text: data.title,
+	                x: -20 //center
+	            },
+	            subtitle: {
+	                text: data.subtitle,
+	                x: -20
+	            },
+	            xAxis: {
+	                categories: data.categories
+	            },
+	            yAxis: {
+	                title: {
+	                    text: data.yAxis_title
+	                }
+	            },
+	            tooltip: {
+	                useHTML: true,
+	                headerFormat: '<small>{point.key}</small><table>',
+	                pointFormat: '<tr><td style="color: {series.color}">{series.name}: </td>' +
+	                    '<td style="text-align: right"><b>{point.y} ' + data.tooltip + '</b></td></tr>',
+	                footerFormat: '</table>',
+	                valueDecimals: 2
+	            },
+		        series: series
+			});
+		});
+	}
+	
+	
+	//月数据
+	getMonthData=function(){
+		var url='/DataAnalysis/quanzhouMonthData?type='+global_type;
+		$.getJSON(url, function (data){
+			var series = [];
+			if(typeof(data.series) != "undefined"){
+		    	$.each(data.series, function(index, element) {
+		    		if(element.type == "column"){
+			    		var dataArrays = [];
+			    		$.each(element.data, function(idx, el) {
+			    			dataArrays.push(parseFloat(el));
+			    		});
+			    		series.push({
+			    			type: element.type,
+			    			name: index,
+			    			data: dataArrays
+			    		});
+		    		}
+		    	});
+		    	$.each(data.series, function(index, element) {
+		    		if(element.type != "column"){
+			    		var dataArrays = [];
+			    		$.each(element.data, function(idx, el) {
+			    			dataArrays.push(parseFloat(el));
+			    		});
+			    		series.push({
+			    			type: element.type,
+			    			name: index,
+			    			data: dataArrays
+			    		});
+		    		}
+		    	});
+			}
+			
+			
+			$('#main').highcharts({
+				exporting:{
+	    			enabled:false
+	    		},
+	    		chart: {
+    	            zoomType: 'x'
+    	        },
+	            title: {
+	                text: data.title,
+	                x: -20 //center
+	            },
+	            subtitle: {
+	                text: data.subtitle,
+	                x: -20
+	            },
+	            xAxis: {
+	                categories: data.categories
+	            },
+	            yAxis: {
+	                title: {
+	                    text: data.yAxis_title
+	                }
+	            },
+	            tooltip: {
+	                useHTML: true,
+	                headerFormat: '<small>{point.key}</small><table>',
+	                pointFormat: '<tr><td style="color: {series.color}">{series.name}: </td>' +
+	                    '<td style="text-align: right"><b>{point.y} ' + data.tooltip + '</b></td></tr>',
+	                footerFormat: '</table>',
+	                valueDecimals: 2
+	            },
+		        series: series
+			});
+		});
+	}
+</script>

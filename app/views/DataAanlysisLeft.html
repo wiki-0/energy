@@ -1,0 +1,37 @@
+#{extends 'main.html' /}
+<!-- 左侧 -->
+<div class="con-left">
+	<div id="main-menu" role="navigation">
+		<div id="main-menu-inner">
+			<ul class="navigation">
+				<li class="mm-dropdown"><a href="#"><span class="mm-text">单因素分析</span></a>
+					<ul class="two-ul">
+					 	<li><a href="@{DataAnalysis.dataSingle()}"><span class="mm-text">河南省-方顶村</span></a></li>
+                        <li><a href="@{DataAnalysis.single_hailaer()}"><span class="mm-text">内蒙古-陶海牧场</span></a></li>
+                        <li><a href="@{DataAnalysis.single_quanzhou()}"><span class="mm-text">福建省-席里村</span></a></li>
+                       	<li><a href="@{DataAnalysis.dataSingle()}"><span class="mm-text">河南省-庙上村</span></a></li>
+					</ul>
+				</li>
+				<li class="mm-dropdown"><a href="#"><span class="mm-text">多因素分析</span></a>
+					<ul class="two-ul">
+					 	<li><a href="@{DataAnalysis.dataMulti()}"><span class="mm-text">河南省-方顶村</span></a></li>
+                        <li><a href="@{DataAnalysis.multi_hailaer()}"><span class="mm-text">内蒙古-陶海牧场</span></a></li>
+                        <li><a href="@{DataAnalysis.multi_quanzhou()}"><span class="mm-text">福建省-席里村</span></a></li>
+                       	<li><a href="@{DataAnalysis.dataMulti()}"><span class="mm-text">河南省-庙上村</span></a></li>
+					</ul>
+				</li>
+				<li class="mm-dropdown"><a href="#"><span class="mm-text">历史数据查询及导出</span></a>
+					<ul class="two-ul">
+					 	<li><a href="@{DataAnalysis.data_history_hailaer()}"><span class="mm-text">河南省-方顶村</span></a></li>
+                        <li><a href="@{DataAnalysis.data_history_hailaer()}"><span class="mm-text">内蒙古-陶海牧场</span></a></li>
+                        <li><a href="@{DataAnalysis.data_history_quanzhou()}"><span class="mm-text">福建省-席里村</span></a></li>
+                       	<li><a href="@{DataAnalysis.data_history_hailaer()}"><span class="mm-text">河南省-庙上村</span></a></li>
+					</ul>
+				</li>
+				
+			</ul>
+		</div>
+	</div>
+</div>
+
+#{doLayout /}

@@ -1,0 +1,27 @@
+#{extends 'SystemmanageLeft.html' /}	
+<style>
+    iframe{
+        width:100%;
+        border:20px;
+        height:410px;
+    }
+}
+</style>
+<!-- 右侧 -->
+<div class="con-right">
+	<div style="margin:3px">
+		<div class="row">
+			<div class="col-sm-12">
+				<section class="panel" style="">
+					<div class="list-group-item active">
+						<h5 class="h5-tit">BBS用户</h5>
+					</div>
+					<div class="ene-rig-d">
+					    <iframe src="@{Users.bbs_user_list()}"></iframe>
+					</div>
+			    </section> 
+			</div>
+		
+	  </div>
+	</div>
+</div>

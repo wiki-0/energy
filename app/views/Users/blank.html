@@ -1,0 +1,54 @@
+#{extends 'SystemmanageLeft.html' /} #{set title:'新建平台用户' /}
+<div class="con-right">
+	<div style="margin:3px">
+			<div class="row">
+				<div class="col-sm-12">
+				<section class="panel" style="">
+					<div class="list-group-item active">
+						<h5 class="h5-tit">平台用户</h5>
+					</div>
+					<div class="ene-rig-d">
+					    <form action="@{Users.create()}">
+				    		<div class="row">
+					    		<div class="col-md-12">
+						    		<div class="form-group dark">
+							        	<div class="control-label col-md-3"><label class="control-label" for="name">用户名:</label><small class="help-block"></small></div>
+							        	<div class="col-md-9 controls"><input name="username" id="username" type="text" class="form-control " value=""></div>
+							        </div>
+						        </div>
+					        </div>
+				    		<div class="row">
+					    		<div class="col-md-12">
+						    		<div class="form-group dark">
+							        	<div class="control-label col-md-3"><label class="control-label" for="name">昵称:</label><small class="help-block"></small></div>
+							        	<div class="col-md-9 controls"><input name="nickname" id="nickname" type="text" class="form-control " value=""></div>
+							        </div>
+						        </div>
+					        </div>
+				    		<div class="row">
+					    		<div class="col-md-12">
+						    		<div class="form-group dark">
+							        	<div class="control-label col-md-3"><label class="control-label" for="name">EMAIL:</label><small class="help-block"></small></div>
+							        	<div class="col-md-9 controls"><input name="email" id="email" type="email" class="form-control " value=""></div>
+							        </div>
+						        </div>
+					        </div>
+				    		<div class="row">
+					    		<div class="col-md-12">
+						    		<div class="form-group dark">
+							        	<div class="control-label col-md-3"><label class="control-label" for="name">密码:</label><small class="help-block"></small></div>
+							        	<div class="col-md-9 controls"><input name="password" id="password" type="password" class="form-control " value=""></div>
+							        </div>
+						        </div>
+					        </div>
+				        <p class="crudButtons">
+				            <input type="submit" class="ui-button-primary" name="_save" value="&{'crud.save', type.modelName}" />
+				        </p>
+				    	</form>
+					</div>
+			    </section> 
+			</div>
+		
+	  </div>
+	</div>
+</div>

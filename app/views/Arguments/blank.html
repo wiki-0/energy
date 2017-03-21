@@ -1,0 +1,40 @@
+#{extends 'SystemmanageLeft.html' /} #{set title:'新建参数' /}
+<div class="con-right">
+  <div class="cdcs-rig-d" style="margin-left:10px;background:#fff;padding:10px">
+    
+   <div class="ene-rig-d" style="margin:0;padding:0">
+    <p class="ene-p-tit">>>新建参数</p>
+    <div class="ene-type-d" id="tableDate">
+    	<form action="@{Arguments.create()}">
+    		<div class="row">
+	    		<div class="col-md-12">
+		    		<div class="form-group dark">
+			        	<div class="control-label col-md-3"><label class="control-label" for="name">参数名:</label><small class="help-block"></small></div>
+			        	<div class="col-md-9 controls"><input name="name" id="name" type="text" class="form-control " value=""></div>
+			        </div>
+		        </div>
+	        </div>
+    		<div class="row">
+	    		<div class="col-md-12">
+		    		<div class="form-group dark">
+			        	<div class="control-label col-md-3"><label class="control-label" for="name">参数值:</label><small class="help-block"></small></div>
+			        	<div class="col-md-9 controls"><input name="value" id="value" type="text" class="form-control " value=""></div>
+			        </div>
+		        </div>
+	        </div>
+    		<div class="row">
+	    		<div class="col-md-12">
+		    		<div class="form-group dark">
+			        	<div class="control-label col-md-3"><label class="control-label" for="name">描述:</label><small class="help-block"></small></div>
+			        	<div class="col-md-9 controls"><input name="description" id="description" type="text" class="form-control " value=""></div>
+			        </div>
+		        </div>
+	        </div>
+        <p class="crudButtons">
+            <input type="submit" class="ui-button-primary" name="_save" value="&{'crud.save', type.modelName}" />
+        </p>
+    	</form>
+    </div>
+   </div>
+  </div>
+</div>

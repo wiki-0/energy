@@ -1,0 +1,26 @@
+#{extends 'example.html' /} #{set title:'参数列表' /}
+<div>
+    <div id="crudListTable">
+    #{crud.tableTileDisable fields:['操作时间','参数名','参数值','创建者','描述','操作'] }
+        #{crud.custom '操作时间'}
+        	${object.date}
+        #{/crud.custom}
+        #{crud.custom '参数名'}
+        	${object.name}
+        #{/crud.custom}
+        #{crud.custom '参数值'}
+        	${object.value}
+        #{/crud.custom}
+        #{crud.custom '创建者'}
+        	${object.user.username}
+        #{/crud.custom}
+        #{crud.custom '描述'}
+        	${object.description}
+        #{/crud.custom}
+        #{crud.custom '操作'}
+        	
+        #{/crud.custom}
+    #{/crud.tableTileDisable}
+    </div>
+    <div id="crudListPagination">#{crud.pagination /}</div>
+</div>

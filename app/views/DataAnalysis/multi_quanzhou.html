@@ -1,0 +1,361 @@
+#{extends 'DataAanlysisLeft.html' /}	
+			
+<!-- 右侧 -->
+<div class="con-right">
+	<div class="cdcs-d">
+		<nav class="navbar navbar-default nav-stacked"><span class="navbar-brand col-white"> 测点参数 </span></nav>
+		<ul class="cdcs-ul" >
+			<li role="presentation"><a href="#" onclick="showDefault();charts('/DataAnalysis/quanzhouTemperatureCompare')">室内外空气温度逐时对比</a></li>
+			<li role="presentation"><a href="#" onclick="showDefault();charts('/DataAnalysis/quanzhouHumidityCompare')">室内外空气相对湿度逐时对比</a></li>
+			<li role="presentation"><a href="#" onclick="showDemo1('combinationCharts','/DataAnalysis/quanzhouTemperatureMultiCompare');combinationCharts('/DataAnalysis/quanzhouTemperatureMultiCompare')">室内外空气温度均峰值对比</a></li>
+			<li role="presentation"><a href="#" onclick="showDemo2('combinationCharts','/DataAnalysis/quanzhouHumidityMultiCompare');combinationCharts('/DataAnalysis/quanzhouHumidityMultiCompare')">室内外空气相对湿度均峰值对比</a></li>
+			<li role="presentation"><a href="#" onclick="showDefault();charts('/DataAnalysis/quanzhouStructureTemperatureEffect')">围护结构构造对室内空气温度的影响</a></li>
+			<li role="presentation"><a href="#" onclick="showDefault();charts('/DataAnalysis/quanzhouStructureHumidityEffect')">围护结构构造对室内空气相对湿度的影响</a></li>
+			<li role="presentation"><a href="#" onclick="showDefault();charts('/DataAnalysis/quanzhouFirstFloorTemperatureCompare')">一层房间室内空气温度对比</a></li>
+			<li role="presentation"><a href="#" onclick="showDefault();charts('/DataAnalysis/quanzhouFirstFloorHumidityCompare')">一层房间室内空气相对湿度对比</a></li>
+			<li role="presentation"><a href="#" onclick="showDefault();charts('/DataAnalysis/quanzhouSecondFloorTemperatureCompare')">二层房间室内空气温度对比</a></li>
+			<li role="presentation"><a href="#" onclick="showDefault();charts('/DataAnalysis/quanzhouSecondFloorHumidityCompare')">二层房间室内空气相对湿度对比</a></li>
+			<li role="presentation"><a href="#" onclick="showDefault();charts('/DataAnalysis/quanzhouWallTemperatureCompare')">内壁面温度日动态变化及对比</a></li>
+			<li role="presentation"><a href="#" onclick="showDefault();charts('/DataAnalysis/quanzhouWindSpeedCompare')">风速日动态变化及对比</a></li>
+			<li role="presentation"><a href="#" onclick="showDemo1('_charts','/DataAnalysis/quanzhouEnergyConsumptionCompare');_charts('/DataAnalysis/quanzhouEnergyConsumptionCompare')">用能动态变化对比</a></li>
+			<li role="presentation"><a href="#" onclick="pieCharts('/DataAnalysis/quanzhouElectricityConsumptionDiffCompare')">不同楼层用电量所占比例对比</a></li>
+        </ul>
+	</div>
+	<div class="cdcs-rig-d" >
+		<div class="row">
+		<div class="col-sm-12">
+			<section class="panel" style="">
+				<div class="list-group-item active" id="button-list">
+					<h5 class="h5-tit">实时监控</h5>
+				</div>
+				<div class="ene-rig-d">
+					<div id="main" style="height:400px">
+					</div>
+				</div>
+		    </section>
+		</div>
+	  </div>
+	</div>
+</div>
+		
+<script type="text/javascript">
+function showDefault(){
+	$("#button-list").empty();
+	$("#button-list").append('<h5 class="h5-tit">实时监控</h5>');
+}
+function showDemo1(functionName,url){
+	$("#button-list").empty();
+	$("#button-list").append('<button type="button" class="btn btn-info" onclick="javascript:'+functionName+'(\''+url+
+		'\')">日变化</button>&nbsp;<button type="button" class="btn btn-info" onclick="javascript:'+functionName+'(\''+url+
+		'?type=month\')">月变化</button>');
+}
+function showDemo2(functionName,url){
+	$("#button-list").empty();
+	$("#button-list").append('<button type="button" class="btn btn-info" onclick="javascript:'+functionName+'(\''+url+
+		'\')">日变化</button>&nbsp;<button type="button" class="btn btn-info" onclick="javascript:'+functionName+'(\''+url+
+		'?type=week\')">周变化</button>&nbsp;<button type="button" class="btn btn-info" onclick="javascript:'+functionName+'(\''+url+
+		'?type=month\')">月变化</button>');
+}
+Highcharts.setOptions({ global: { useUTC: false } });
+function charts(url){
+	$.getJSON(url, function (data) {
+		var series = [];
+		if(typeof(data.series) != "undefined"){
+	    	$.each(data.series, function(index, element) {
+	    		var dataArrays = [];
+	    		var date;
+	    		$.each(element, function(idx, el) {
+	    			date = el.time;
+	    			date = date.replace(/-/g,"/");
+	    			dataArrays.push([Date.parse(date),el.value]);
+	    		});
+	    		series.push({
+	    			name: index,
+	    			data: dataArrays
+	    		});
+	    	});
+    	}
+		$('#main').highcharts({
+    		exporting:{
+    			enabled:false
+    		},
+    		chart: {
+   	            type: data.type,
+   	            zoomType: 'x'
+   	        },
+            title: {
+                text: data.title,
+                x: -20 //center
+            },
+            subtitle: {
+                text: data.subtitle,
+                x: -20
+            },
+            xAxis: {
+            	type: 'datetime',
+            	dateTimeLabelFormats: {
+                    day: '%e of %b'
+                }
+            },
+            yAxis: {
+                title: {
+                    text: data.yAxis_title
+                }
+            },
+            tooltip: {
+            	shared: true,
+                valueSuffix: data.tooltip
+            },
+            series: series
+        });
+	})
+}
+function _charts(url){
+	$.getJSON(url, function (data) {
+		if(data.type == 'day'){
+			var series = [];
+			if(typeof(data.arrays1) != "undefined"){
+	    		var dataArrays = [];
+	    		var date;
+		    	$.each(data.arrays1, function(index, element) {
+		    		date = element.time;
+		    		date = date.replace(/-/g,"/");
+	    			dataArrays.push([Date.parse(date),element.value]);
+		    	});
+	    		series.push({
+	    			name: '总用水量',
+	    			data: dataArrays
+	    		});
+	    	}
+			if(typeof(data.arrays2) != "undefined"){
+	    		var dataArrays = [];
+	    		var date;
+		    	$.each(data.arrays2, function(index, element) {
+		    		date = element.time;
+		    		date = date.replace(/-/g,"/");
+	    			dataArrays.push([Date.parse(date),element.value]);
+		    	});
+	    		series.push({
+	    			name: '总用电量',
+	    			data: dataArrays,
+	    			tooltip: {
+	                    valueSuffix: ' kWh'
+	                },
+	                yAxis: 1
+	    		});
+	    	}
+			$('#main').highcharts({
+	    		exporting:{
+	    			enabled:false
+	    		},
+	    		chart: {
+	   	            type: 'spline',
+	   	            zoomType: 'x'
+	   	        },
+	            title: {
+	                text: '用能动态变化对比',
+	                x: -20 //center
+	            },
+	            subtitle: {
+	                text: data.subtitle,
+	                x: -20
+	            },
+	            xAxis: {
+	            	type: 'datetime',
+	            	dateTimeLabelFormats: {
+	                    day: '%e of %b'
+	                }
+	            },
+	            yAxis: [{
+	                title: {
+	                    text: '总用水量(m3)'
+	                }
+	            }, {
+	                title: {
+	                    text: '总用电量kWh'
+	                },
+	                opposite: true
+	            }],
+	            tooltip: {
+	            	shared: true,
+	                valueSuffix: ' m3'
+	            },
+	            series: series
+	        });
+		} else if (data.type == 'month'){
+			$('#main').highcharts({
+	    		exporting:{
+	    			enabled:false
+	    		},
+	    		chart: {
+	   	            type: 'column'
+	   	        },
+	            title: {
+	                text: '用能动态变化对比',
+	                x: -20 //center
+	            },
+	            subtitle: {
+	                text: data.subtitle,
+	                x: -20
+	            },
+	            xAxis: {
+	                categories: data.categories
+	            },
+	            yAxis: [{
+	                title: {
+	                    text: '总用水量(m3)'
+	                }
+	            }, {
+	                title: {
+	                    text: '总用电量kWh'
+	                },
+	                opposite: true
+	            }],
+	            tooltip: {
+	            	shared: true,
+	                valueSuffix: ' m3'
+	            },
+	            plotOptions: {
+	                column: {
+	                    grouping: false,
+	                    shadow: false,
+	                    borderWidth: 0
+	                }
+	            },
+	            series: [{
+	                name: '用水量',
+	                color: 'rgba(165,170,217,1)',
+	                data: data.waterConsumption,
+	                pointPadding: 0.3,
+	                pointPlacement: -0.2
+	            }, {
+	                name: '用电量',
+	                color: 'rgba(186,60,61,.9)',
+	                data: data.electricityConsumption,
+	                tooltip: {
+	                    valueSuffix: ' kWh'
+	                },
+	                pointPadding: 0.3,
+	                pointPlacement: 0.2,
+	                yAxis: 1
+	            }]
+	        });
+		}
+	})
+}
+function pieCharts(url){
+	$.getJSON(url, function (data) {
+		var series = [];
+   		var dataArrays = [];
+		if(typeof(data.series) != "undefined"){
+	    	$.each(data.series, function(index, element) {
+    			dataArrays.push([element.name,element.value]);
+	    	});
+    	}
+		series.push({
+			name: '百分比',
+			data: dataArrays
+		});
+		$('#main').highcharts({
+    		exporting:{
+    			enabled:false
+    		},
+    		chart: {
+   	            type: 'pie'
+   	        },
+            title: {
+                text: data.title,
+                x: -20 //center
+            },
+            subtitle: {
+                text: data.subtitle,
+                x: -20
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.y} kWh',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        }
+                    },
+           	 		showInLegend: true
+                }
+            },
+            series: series
+        });
+	})
+}
+function combinationCharts(url){
+	$.getJSON(url, function (data) {
+		var series = [];
+		if(typeof(data.series) != "undefined"){
+	    	$.each(data.series, function(index, element) {
+	    		if(element.type == "column"){
+		    		var dataArrays = [];
+		    		$.each(element.data, function(idx, el) {
+		    			dataArrays.push(parseFloat(el));
+		    		});
+		    		series.push({
+		    			type: element.type,
+		    			name: index,
+		    			data: dataArrays
+		    		});
+	    		}
+	    	});
+	    	$.each(data.series, function(index, element) {
+	    		if(element.type != "column"){
+		    		var dataArrays = [];
+		    		$.each(element.data, function(idx, el) {
+		    			dataArrays.push(parseFloat(el));
+		    		});
+		    		series.push({
+		    			type: element.type,
+		    			name: index,
+		    			data: dataArrays
+		    		});
+	    		}
+	    	});
+    	}
+		$('#main').highcharts({
+    		exporting:{
+    			enabled:false
+    		},
+    		chart: {
+   	            zoomType: 'x'
+   	        },
+            title: {
+                text: data.title,
+                x: -20 //center
+            },
+            subtitle: {
+                text: data.subtitle,
+                x: -20
+            },
+            xAxis: {
+                categories: data.categories
+            },
+            yAxis: {
+                title: {
+                    text: data.yAxis_title
+                }
+            },
+            tooltip: {
+                useHTML: true,
+                headerFormat: '<small>{point.key}</small><table>',
+                pointFormat: '<tr><td style="color: {series.color}">{series.name}: </td>' +
+                    '<td style="text-align: right"><b>{point.y} ' + data.tooltip + '</b></td></tr>',
+                footerFormat: '</table>',
+                valueDecimals: 2
+            },
+            series: series
+        });
+	})
+}
+</script>

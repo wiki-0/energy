@@ -1,0 +1,202 @@
+#{extends 'OnlineMonitLeft.html' /}
+<div class="con-right">
+	<div class="cdcs-d">
+		<nav class="navbar navbar-default nav-stacked">
+			<span class="navbar-brand col-white" href="#"> 测点参数 </span>
+		</nav>
+		<ul class="cdcs-ul">
+			<li role="presentation"><a href="#">厨房电表</a></li>
+			<li role="presentation"><a href="#">总电表</a></li>
+			<li role="presentation"><a href="#">卫生间电表</a></li>
+			<li role="presentation"><a href="#">总水表</a></li>
+		</ul>
+	</div>
+	<div class="cdcs-rig-d">
+		<div class="row">
+			<div class="col-sm-12">
+				<section class="panel" style="">
+					<div class="list-group-item active">
+						<h5 class="h5-tit">实时监控</h5>
+					</div>
+					<div class="bs-example bs-example-tabs"
+						data-example-id="togglable-tabs">
+						<ul id="myTabs" class="nav nav-tabs" role="tablist">
+							<li role="presentation" class="active" id="home-li"><a
+								href="#home" id="home-tab" role="tab" data-toggle="tab"
+								aria-controls="home" aria-expanded="true">电</a></li>
+							<li class="" role="presentation" id="profile-li"><a
+								aria-expanded="false" href="#profile" role="tab"
+								id="profile-tab" data-toggle="tab" aria-controls="profile">水</a></li>
+						</ul>
+						<div id="myTabContent" class="tab-content">
+							<div role="tabpanel" class="tab-pane fade active in" id="home"
+								aria-labelledby="home-tab">
+								<div class="panel-body">
+									<div class="adv-table">
+										<table class="display table table-bordered"
+											style="margin-bottom: 0;" id="monitorData">
+											<thead>
+												<tr>
+													<th>监测点</th>
+													<th>参数名</th>
+													<th>仪表名</th>
+													<th>用量</th>
+													<th>抄表时间</th>
+												</tr>
+											</thead>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div role="tabpanel" class="tab-pane" id="profile"
+								aria-labelledby="profile-tab">
+								<div class="panel-body">
+									<div class="adv-table">
+										<table class="display table table-bordered" id="dynamic-table">
+											<thead class="thead-css">
+												<tr>
+													<th>监测点</th>
+													<th>参数名</th>
+													<th>仪表名</th>
+													<th>用量</th>
+													<th>抄表时间</th>
+												</tr>
+											</thead>
+											<tbody class="tbody-scroll">
+												<tr class="gradeX">
+													<td>能耗中心</td>
+													<td>庙上村用表</td>
+													<td>能耗中心</td>
+													<td>330.05kw/h</td>
+													<td>2015-12-24 07:41:54</td>
+												</tr>
+												<tr class="gradeX">
+													<td>能耗中心</td>
+													<td>庙上村用表</td>
+													<td>能耗中心</td>
+													<td>330.05kw/h</td>
+													<td>2015-12-24 07:41:54</td>
+												</tr>
+												<tr class="gradeX">
+													<td>能耗中心</td>
+													<td>庙上村用表</td>
+													<td>能耗中心</td>
+													<td>330.05kw/h</td>
+													<td>2015-12-24 07:41:54</td>
+												</tr>
+												<tr class="gradeX">
+													<td>能耗中心</td>
+													<td>庙上村用表</td>
+													<td>能耗中心</td>
+													<td>330.05kw/h</td>
+													<td>2015-12-24 07:41:54</td>
+												</tr>
+												<tr class="gradeX">
+													<td>能耗中心</td>
+													<td>庙上村用表</td>
+													<td>能耗中心</td>
+													<td>330.05kw/h</td>
+													<td>2015-12-24 07:41:54</td>
+												</tr>
+												<tr class="gradeX">
+													<td>能耗中心</td>
+													<td>庙上村用表</td>
+													<td>能耗中心</td>
+													<td>330.05kw/h</td>
+													<td>2015-12-24 07:41:54</td>
+												</tr>
+												<tr class="gradeX">
+													<td>能耗中心</td>
+													<td>庙上村用表</td>
+													<td>能耗中心</td>
+													<td>330.05kw/h</td>
+													<td>2015-12-24 07:41:54</td>
+												</tr>
+												<tr class="gradeX">
+													<td>能耗中心</td>
+													<td>庙上村用表</td>
+													<td>能耗中心</td>
+													<td>330.05kw/h</td>
+													<td>2015-12-24 07:41:54</td>
+												</tr>
+												<tr class="gradeX">
+													<td>能耗中心</td>
+													<td>庙上村用表</td>
+													<td>能耗中心</td>
+													<td>330.05kw/h</td>
+													<td>2015-12-24 07:41:54</td>
+												</tr>
+												<tr class="gradeX">
+													<td>能耗中心</td>
+													<td>庙上村用表</td>
+													<td>能耗中心</td>
+													<td>330.05kw/h</td>
+													<td>2015-12-24 07:41:54</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+			<div class="col-sm-12">
+				<section class="panel">
+					<div class="list-group-item active">
+						<h5 class="h5-tit">室内实时数据</h5>
+					</div>
+					<div class="sssj-d sssj-left-d" style="">
+						<div class="list-group-item ">
+							<h5 class="h5-tit">南厢房</h5>
+						</div>
+						<img src="@{'/public/images/biao_01.png'}" width="100%"
+							height="150px" />
+
+					</div>
+					<div class="sssj-d" style="">
+						<div class="list-group-item ">
+							<h5 class="h5-tit">东厢房</h5>
+						</div>
+						<img src="@{'/public/images/biao_02.png'}" width="100%"
+							height="150px" />
+					</div>
+				</section>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+			$('#home-tab').click(function (e) {
+			  $("#home").show();
+			  $("#profile").hide();
+			  $("#home-li").addClass("active");
+			  $("#profile-li").removeClass("active");
+			})
+			$('#profile-tab').click(function (e) {
+			  $("#home").hide();
+			  $("#profile").show();
+			  $("#home-li").removeClass("active");
+			  $("#profile-li").addClass("active");
+			})
+		</script>
+<script>
+			var allPlanTable = $("#monitorData").dataTable({
+			       "bLengthChange": true,
+			       "bServerSide": true,
+			       "sAjaxSource": "/OnlineMonit/dataTablePage",    
+			       "sServerMethod": "POST",
+			       "aoColumns": [
+			                     { "mData": "a" },
+			                     { "mData": "b" },
+			                     { "mData": "c" },
+			                     { "mData": "d" },
+			                     { "mData": "e" }
+			                 ],
+			      	 "sDom": "<'row'<'col-md-7'T><'col-md-2'l><'col-md-3'f>r>t<'row'<'col-md-6'i><'col-md-6'p>>", 
+					 "oTableTools": {
+				     "sSwfPath": "/public/images/copy_csv_xls_pdf.swf"
+			        }  
+			});
+	</script>

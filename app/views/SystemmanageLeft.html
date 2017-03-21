@@ -1,0 +1,19 @@
+#{extends 'main.html' /}
+<!-- 左侧 -->
+<div class="con-left">
+	<div id="main-menu" role="navigation">
+		<div id="main-menu-inner">
+			<ul class="navigation">
+				<li class="mm-dropdown"><a href="#"><span class="mm-text">用户管理</span></a>
+					<ul class="two-ul">
+					 	<li><a href="@{Systemmanage.users()}"><span class="mm-text">平台用户</span></a></li>
+                        <li><a href="@{Systemmanage.usersbbs()}"><span class="mm-text">BBS用户</span></a></li>
+					</ul>
+				</li>
+				<li ><a href="@{Systemmanage.setting()}"><span>参数设置</span></a></li>
+				<li><a href="@{Systemmanage.data()}"><span class="mm-text">数据备份</span></a></li>				
+			</ul>
+		</div>
+	</div>
+</div>
+#{doLayout /}

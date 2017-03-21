@@ -1,0 +1,73 @@
+#{extends 'OtherLeft.html' /}
+<!-- 右侧 -->
+<div class="con-right">
+	<div class="cdcs-d">
+		<nav class="navbar navbar-default nav-stacked">
+			<span class="navbar-brand col-white" href="#">请选择示范点</span>
+		</nav>
+		<ul class="cdcs-ul">
+			<li role="presentation">
+				<button class="btn btn-primary btn-sm active" onclick="loadPosition('hn')">河南省-庙上村</button>
+			</li>
+			<li role="presentation">
+				<button class="btn btn-primary btn-sm" onclick="loadPosition('nx')">宁夏省-和顺新村</button>
+			</li>
+			<li role="presentation">
+				<button class="btn btn-primary btn-sm" onclick="loadPosition('zj')">浙江省-三鑫村</button>
+			</li>
+		</ul>
+	</div>
+	<div class="cdcs-rig-d">
+		<div class="row">
+			<div class="col-sm-12">
+				<section class="panel" style="">
+					<div class="list-group-item active">
+						<button id="btn1" class="btn btn-success btn-sm" onclick="loadDisplay('Entire')" disabled="disabled">BIM模型-建筑整体展示</button>
+						<button id="btn2" class="btn btn-success btn-sm" onclick="loadDisplay('Detail')" disabled="disabled">BIM模型-建筑细节展示</button>
+						<button id="btn3" class="btn btn-success btn-sm" onclick="loadDisplay('Creating')" disabled="disabled">营建过程</button>
+						<button id="btn4" class="btn btn-success btn-sm" onclick="loadDisplay('Animation')" disabled="disabled">特色动画</button>
+					</div>
+					<div class="ene-rig-d">
+					#{if user != null}
+						#{if user.username == "admin"}
+							<button class="btn5" disabled="disabled">
+								<a href="#" id="link">
+									编辑
+								</a>
+							</button>
+						#{/if}
+					#{/if}
+						<div id="content">
+							${other.content.raw()}
+						</div>
+					</div>
+				</section>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	var g_position;
+	var content = document.getElementById('content');
+	
+	function loadPosition(position){
+		g_position = position ;
+		$('#btn1').removeAttr("disabled");
+		$('#btn2').removeAttr("disabled");
+		$('#btn3').removeAttr("disabled");
+		$('#btn4').removeAttr("disabled");
+		$('#btn5').removeAttr("disabled");
+		loadDisplay('Entire');
+	}
+	
+	function loadDisplay(arg){
+		var url = "/Other/loadDisplay?url="+g_position+arg;
+		$.get(url, function(data){
+			content.innerHTML = data.content;
+			var link = "/Other/edit?url="+data.url;
+			$('#link').attr("href",link);
+		});
+	}
+</script>

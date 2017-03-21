@@ -1,0 +1,128 @@
+#{extends 'OtherLeft.html' /}
+<!-- 右侧 -->
+<div class="con-right">
+	<div class="row">
+		<div class="col-sm-12">
+				<div class="list-group-item active">
+					<h5 class="h5-tit">${other.description}</h5>
+				</div>
+				<br />
+				<form id="create_form"
+					action="/Other/save?url=${other.url}" method="post"
+					enctype="multipart/form-data">
+					<textarea id="content" name="content"
+						class="form-control cre-text-inp" style="max-height: 1000px;">
+								${other.content}
+	                </textarea>
+					<input type="submit" value="保 存" class="btn btn-success">
+				</form>
+		</div>
+
+	</div>
+</div>
+
+<script type="text/javascript">
+	//为页面所有的editor配置全局的密钥
+	wangEditor.config.mapAk = 'pbhgPeSacd9zV5TBSwcx5XIE9zfPIDmG';  // 此处换成自己申请的密钥
+	
+	// 阻止输出log
+	wangEditor.config.printLog = false;
+	
+	var editor = new wangEditor('content');
+	
+	
+	// 为当前的editor配置密钥
+	editor.config.mapAk = 'pbhgPeSacd9zV5TBSwcx5XIE9zfPIDmG';  // 此处换成自己申请的密钥
+	
+	 // 关闭菜单栏fixed
+	editor.config.menuFixed = false;
+	
+	// 修改菜单栏fixed的上边距（单位 px）
+	// editor.config.menuFixed = 50;
+	
+	// 将全屏时z-index修改为20000
+	editor.config.zindex = 20000;
+	
+	 // 自定义菜单
+	editor.config.menus = [
+	    '|',     // '|' 是菜单组的分割线
+	    'bold',
+	    'underline',
+	    'italic',
+	    'strikethrough',
+	    'eraser',
+	    'forecolor',
+	    '|',
+	    'quote',
+	    'fontfamily',
+	    'fontsize',
+	    'head',
+	    'unorderlist',
+	    'orderlist',
+	    'alignleft',
+	    'aligncenter',
+	    'alignright',
+	    '|',
+	    'link',
+	    'unlink',
+	    '|',
+	    'img',
+	    'video',
+	    'location',
+	    '|',
+	    'undo',
+	    'redo',
+	    'fullscreen'
+	 ];
+	
+	 // 颜色
+	editor.config.colors = {
+	    '#880000': '暗红色',
+	    '#800080': '紫色',
+	    '#ff0000': '红色'
+	};
+	
+	// 字体
+	editor.config.familys = [
+	    '宋体', '黑体', '楷体', '微软雅黑',
+	    'Arial', 'Verdana', 'Georgia'
+	];
+	
+	// 字号
+	editor.config.fontsizes = {
+	    // 格式：'value': 'title'
+	    1: '10px',
+	    2: '13px',
+	    3: '16px',
+	    4: '19px',
+	    5: '22px',
+	    6: '25px',
+	    7: '28px'
+	};
+	
+	
+	 // 使用英语
+	editor.config.lang = wangEditor.langs['zh-cn'];
+	
+		// 上传图片（举例）
+	editor.config.uploadImgUrl = '/Other/upload';
+	
+	// 配置自定义参数（举例）
+	editor.config.uploadParams = {
+	    
+	};
+	
+		// 自定义load事件
+	editor.config.uploadImgFns.onload = function (resultText, xhr) {
+	    // resultText 服务器端返回的text
+	    // xhr 是 xmlHttpRequest 对象，IE8、9中不支持
+	
+	    // 如果 resultText 是图片的url地址，可以这样插入图片：
+	    editor.command(null, 'insertHtml', '<img src="' + resultText + '" style="max-width:100%;"/>');
+	    // 如果不想要 img 的 max-width 样式，也可以这样插入：
+	    // editor.command(null, 'InsertImage', resultText);
+	};
+	editor.create();
+</script>
+
+

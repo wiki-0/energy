@@ -1,0 +1,35 @@
+#{extends 'OtherLeft.html' /}	
+    <!-- 右侧 -->
+	    <div class="con-right">
+				<div class="cdcs-d">
+					<nav class="navbar navbar-default nav-stacked"><span class="navbar-brand col-white" href="#">选择气候区</span></nav>
+					<ul class="cdcs-ul" >
+					      <li role="presentation"><a href="@{Other.fence('excoldFence')}">严寒地区</a></li>
+					      <li role="presentation"><a href="@{Other.fence('coldFence')}">寒冷地区</a></li>
+					      <li role="presentation"><a href="@{Other.fence('warmFence')}">夏热冬暖地区</a></li>
+                    </ul>
+				</div>
+				<div class="cdcs-rig-d" >
+					<div class="row">
+					<div class="col-sm-12">
+						<section class="panel" style="">
+							<div class="list-group-item active">
+								<h5 class="h5-tit">${other.description}</h5>
+							</div>
+						#{if user != null}
+							#{if user.username == "admin"}
+								<a href="/Other/edit?url=${other.url}">
+									<li>&nbsp;&nbsp;&nbsp;&nbsp;编辑</li>
+								</a>
+							#{/if}
+						#{/if}
+							<br />
+							<div class="ene-rig-d">
+							  ${other.content.raw()}
+							</div>
+					    </section> 
+					</div>
+					
+				  </div>
+				</div>
+			</div>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>#{get 'title' /}</title>
+    <link href="@{'/public/css/bootstrap.min.css'}" rel="stylesheet"/>
+    <link href="@{'/public/css/metro.css'}" rel="stylesheet"/>
+    <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/pixel-admin.css'}" type="text/css">
+    <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/themes.css'}" type="text/css">
+    <link href="@{'/public/css/style.css'}" rel="stylesheet"/>
+    <link href="@{'/public/dist/css/wangEditor.css'}" rel="stylesheet"/>
+    <script src="@{'/public/javascripts/jquery/jquery.min.js'}" type="text/javascript"></script>
+    <script src="@{'/public/javascripts/bootstrap.min.js'}" type="text/javascript"></script>
+    <script src="@{'/public/javascripts/jquery.metisMenu.js'}" type="text/javascript"></script>
+    <script src="@{'public/javascripts/pixel-admin.js'}"></script>
+    <!-- 分页  -->
+    <script src="@{'/public/javascripts/jquery.dataTables.js'}" type="text/javascript"></script>
+    <script src="@{'/public/javascripts/DT_bootstrap.js'}" type="text/javascript"></script>
+    <script src="@{'/public/javascripts/dynamic_table_init.js'}" type="text/javascript"></script>
+    <!-- 测点参数-tree -->
+    <script src="@{'/public/javascripts/jquery.ztree.all-3.5.min.js'}" type="text/javascript"></script>
+    <script src="@{'/public/javascripts/highcharts.js'}"></script>
+    <script src="@{'/public/javascripts/Highcharts-4.2.3/highcharts-more.js'}"></script>
+    <script src="@{'/public/javascripts/Highcharts-4.2.3/solid-gauge.js'}"></script>
+
+    <script src="@{'/public/dist/js/wangEditor.js'}"></script>
+    <script src="@{'/public/bbs/plupload.full.min.js'}"></script>
+</head>
+<body class="theme-clean main-menu-animated">
+<!-- 头部 -->
+<header>
+    <div id="modal-blurred-bg" class="modal fade modal-blur" tabindex="-1"
+         role="dialog" style="display: none;">
+        <div class="modal-dialog modal-lg">
+            <div class="jumbotron">
+                <div class="container">
+                    <p><b>研发背景
+                    </b><br>&nbsp;&nbsp;&nbsp;&nbsp;本监测展示平台研发依托“十二五”国家科技支撑计划课题——“能源自维持住宅监测展示平台研发与范”（2013BAL01B04）。该课题隶属于隶属于“农村能源自维持住宅关键技术集成研究与示范”项目。该课题也是科技部将“村镇建设”作为独立研究领域后的第一个立项项目中的课题。
+                        <br><br><b>研发团队
+                        </b><br>&nbsp;&nbsp;&nbsp;&nbsp;郑州大学
+                        <br>&nbsp;&nbsp;&nbsp;&nbsp;中国建筑设计院有限公司
+                        <br>&nbsp;&nbsp;&nbsp;&nbsp;中英娜（北京）科技有限公司
+                        <br>&nbsp;&nbsp;&nbsp;&nbsp;新蒲建设集团有限公司。
+                        <br><br><b>应用前景
+                        </b><br>&nbsp;&nbsp;&nbsp;&nbsp;能源自维持住宅监测在线展示平台研究是根据我国国情的自主研发的产品和技术，具有很强的针对性。在节能住宅建设领域中，国外同类产品或技术的科技含量和功能品质都比较高。同时，也有许多节能软件的开发与应用，在节能建筑设计及监测中均有较为卓越的表现，可以提供关于住宅建筑物理环境等方面大量的实证数据。另外，建筑全寿命周期模型的建立也为建筑设计—结构设计—施工与建造—能耗监测提供了可量化的虚拟模型平台。然而，在农村节能住宅中应用多学科软件平台分析与研究，建立能源自维持住宅建筑信息平台及监测展示系统，系统分析自维持住宅体系的建筑形态、结构、构造、材料，结合自然地理信息、地方营造经验、建筑工艺、施工流程等关键技术环节，并实现建筑信息的可视化动态模拟，在国内外相关研究中尚属首例。它不仅克服以往研究缺乏对于不同地貌特征的村镇住宅选址以及特殊营造技术方法的针对性研究的不足，也克服了以往研究中仅注重理论模型研究，示范推广应用难度大，监测反馈机制不健全的缺点。充分考虑了农村住宅受自然地理和人文历史条件、建设模式、村民自住建房建造水平及培训需求等因素影响，实现了简便、易操作的动态可视化网络培训平台。
+                        <br>
+                        <br></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="banner">
+        <label class="logo"></label>
+        <button type="button" class="btn btn-success dropdown-toggle about_rig" data-toggle="modal"
+                data-target="#modal-blurred-bg" aria-haspopup="true" aria-expanded="false">关于我们
+        </button>
+    </div>
+    <div class="head-tit">
+        <nav class="navbar navbar-default head-top">
+            <div id="head-menu" class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
+                <ul id="head-ul" class="nav navbar-nav">
+                    <li><a href="@{Application.index()}">平台门户</a></li>
+                    #{if session.get("permission")!=null}
+                        #{if session.get("permission") == "admin_manager" || session.get("permission") == "admin_operator"}
+                            <li><a href="@{OnlineMonit.monitoring()}">在线监测</a></li>
+                            <li><a href="@{DataAnalysis.single_hailaer()}">数据分析</a></li>
+                        #{/if}
+                    #{/if}
+                    <li><a href="@{Demonstration.building_neimeng()}">示范展示</a></li>
+                    <li><a href="@{Other.show('dropConsume')}">其它展示 </a></li>
+                    <li><a href="@{Propaganda.training()}">宣传推广</a></li>
+                     #{if session.get("permission")!=null}
+                        #{if session.get("permission") == "admin_manager" || session.get("permission") == "admin_operator"}
+                            <li><a href="@{FaultAlarm.monitorManage()}">故障报警</a></li>
+                        #{/if}
+                    #{/if}
+                    #{if session.get("permission")!=null}
+                        #{if session.get("permission") == "admin_manager"}
+                            <li><a href="@{Systemmanage.users()}">系统管理</a></li>
+                        #{/if}
+                    #{/if}
+    				#{if session.get("permission")==null}
+                        <li class="user-bbs-out"><a href="@{Secure.login()}" class="user-bbs-out">登录系统</a></li>
+    				#{/if}
+    				#{else}
+                        <li class="user-bbs-out"><a href="@{Secure.logout()}" class="user-bbs-out">退出系统</a></li>
+    				#{/else}
+                </ul>
+            </div>
+        </nav>
+    </div>
+</header>
+<section class="con-other">
+#{doLayout /}
+</section>
+<script type="text/javascript">
+    window.PixelAdmin.start();
+</script>
+<script type="text/javascript">
+    $("#head-ul li").click(function () {
+        if ($(this).attr('isclick') == 'true') {
+            $(this).addClass("act_li");
+            $(this).find("a").addClass("act_li_a");
+        } else {
+            $(this).removeClass("act_li");
+            $(this).find("a").removeClass("act_li_a");
+        }
+    })
+</script>
+</body>
+</html>
